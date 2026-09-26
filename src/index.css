@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-cream: #FAF7EE;
+    --color-black: #141414;
+    --color-coral: #FF4625;
+    --color-blue: #1F51FF;
+    --color-lime: #C6F226;
+    --color-mint: #B3F5DF;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-black);
+  }
+
+  h1, h2, h3, .font-heading {
+    font-family: 'Archivo', 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0ebe0;
+}
+::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF4625;
+}
+
+/* Neo-brutalist tactile shadows */
+.brutal-shadow {
+  box-shadow: 3px 3px 0px #141414;
+}
+
+.brutal-shadow-lg {
+  box-shadow: 5px 5px 0px #141414;
+}
+
+.brutal-shadow-blue {
+  box-shadow: 5px 5px 0px #1F51FF;
+}
+
+.brutal-shadow-lime {
+  box-shadow: 5px 5px 0px #C6F226;
+}
+
+.brutal-btn {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brutal-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #141414;
+}
+
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #141414;
+}
+
+.brutal-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.brutal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 6px 6px 0px #141414;
+}
+
+/* Pulse dot animation */
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s infinite ease-in-out;
+}
