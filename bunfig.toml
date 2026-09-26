@@ -1,0 +1,12 @@
+# Configuration file for Bun
+[install]
+# Prefer offline cache when available
+cache = true
+
+[run]
+# Auto-load .env files
+dotenv = true
+
+[test]
+# Root for tests
+root = "src"
