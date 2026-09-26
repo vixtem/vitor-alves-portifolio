@@ -20,7 +20,7 @@ export const CasesPage: React.FC = () => {
     <Marquee /><Navbar onOpenQuote={openQuote} />
     <main>
       <section className="border-b-2 border-ink"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <a href="/" className="inline-flex items-center gap-2 text-sm font-black hover:text-coral transition-colors mb-8"><ArrowLeft className="w-4 h-4" /> Voltar para o início</a>
+        <a href={import.meta.env.BASE_URL} className="inline-flex items-center gap-2 text-sm font-black hover:text-coral transition-colors mb-8"><ArrowLeft className="w-4 h-4" /> Voltar para o início</a>
         <div className="grid lg:grid-cols-12 gap-8 items-end"><div className="lg:col-span-8">
           <div className="inline-flex items-center gap-2 rounded-full bg-lime border-2 border-ink px-3 py-1.5 text-xs font-black uppercase mb-4"><FolderKanban className="w-4 h-4" /> Portfólio completo</div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black font-heading uppercase leading-[.95]">Cases & <span className="text-coral">Projetos</span></h1>
