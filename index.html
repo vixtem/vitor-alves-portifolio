@@ -399,14 +399,13 @@
         <a href="./cases.html" id="btnVerTudo" class="text-ink font-black text-sm hover:text-coral transition-colors inline-flex items-center gap-2 group self-start sm:self-auto"><span id="verTudoText">Ver todos os cases</span><span class="group-hover:translate-x-1 transition-transform">→</span></a>
       </div>
 
-      <div class="flex flex-wrap gap-2.5 mb-8">
+       <div class="flex flex-wrap gap-2.5 mb-8">
         <button onclick="filterProjects('all')" class="filter-btn active px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-ink text-white transition-all">Todos</button>
         <button onclick="filterProjects('engenharia')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">Engenharia</button>
         <button onclick="filterProjects('produto')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">Design de Produto</button>
         <button onclick="filterProjects('cad')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">CAD</button>
         <button onclick="filterProjects('am')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">Manufatura Aditiva</button>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-7 xl:gap-9" id="projectsGrid">
         <article class="project-card group bg-cream border-2 border-ink rounded-3xl overflow-hidden brutal-shadow transition-all hover:-translate-y-1.5 hover:shadow-[6px_6px_0px_#141414] cursor-pointer flex flex-col" data-category="engenharia cad am" onclick="openProjectModal('ergonomic')">
           <div class="w-full aspect-[4/3] bg-[#bce3cf] overflow-hidden border-b-2 border-ink relative">
