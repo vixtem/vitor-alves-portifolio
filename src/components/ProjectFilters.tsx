@@ -25,8 +25,8 @@ export const ProjectFilters: React.FC<{
           onClick={() => onChange(tab.id)}
           className={`px-4 py-2 rounded-full text-xs font-black uppercase border-2 border-ink transition-all ${
             isActive
-              ? '!bg-ink !text-white'
-              : 'bg-white text-ink hover:bg-neutral-100'
+              ? 'bg-ink text-white'
+              : 'bg-white text-ink'
           }`}
         >
           {tab.label}
