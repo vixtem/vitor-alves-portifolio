@@ -406,19 +406,43 @@
         <button onclick="filterProjects('cad')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">CAD</button>
         <button onclick="filterProjects('am')" class="filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-black uppercase border-2 border-ink bg-white text-ink transition-all">Manufatura Aditiva</button>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-7 xl:gap-9" id="projectsGrid">
-        <article class="project-card group bg-cream border-2 border-ink rounded-3xl overflow-hidden brutal-shadow transition-all hover:-translate-y-1.5 hover:shadow-[6px_6px_0px_#141414] cursor-pointer flex flex-col" data-category="engenharia cad am" onclick="openProjectModal('ergonomic')">
-          <div class="w-full aspect-[4/3] bg-[#bce3cf] overflow-hidden border-b-2 border-ink relative">
-            <img src="public/assets/project-ergonomic.png" alt="Projeto de engenharia e fabricação aditiva" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute top-3 right-3 bg-white/95 border border-ink rounded-full px-3 py-1 text-[10px] font-black uppercase">SolidWorks · FDM</div>
-          </div>
-          <div class="p-6 sm:p-7 flex flex-col flex-1">
-            <div class="text-[10px] font-black uppercase tracking-[0.16em] text-cobalt mb-2">Engenharia · Desenvolvimento CAD</div>
-            <h3 class="text-xl sm:text-2xl lg:text-[26px] leading-tight font-black font-heading text-ink group-hover:text-coral transition-colors">Suporte de Mesa Ergonômico</h3>
-            <p class="text-sm text-ink/70 font-medium mt-3 leading-relaxed">Desenvolvimento paramétrico orientado à fabricação, do requisito funcional à peça produzida.</p>
-            <div class="mt-auto pt-5 flex items-center justify-between gap-3 border-t border-ink/15 mt-6">
-              <span class="text-[11px] sm:text-xs font-extrabold text-ink/65">Problema → CAD → Fabricação</span><span class="w-9 h-9 shrink-0 rounded-full border-2 border-ink bg-lime flex items-center justify-center font-black group-hover:bg-coral group-hover:text-white transition-colors">↗</span>
-            </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-7 xl:gap-9" id="projectsGrid">
+  <article class="project-card group bg-cream border-2 border-ink rounded-3xl overflow-hidden brutal-shadow transition-all hover:-translate-y-1.5 hover:shadow-[6px_6px_0px_#141414] cursor-pointer flex flex-col" data-category="engenharia cad am" onclick="openProjectModal('ergonomic')">
+
+    <div class="w-full aspect-[4/3] bg-[#bce3cf] overflow-hidden border-b-2 border-ink relative">
+      <img
+        src="./assets/project-ergonomic.png"
+        alt="Projeto de engenharia e fabricação aditiva"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      >
+
+      <div class="absolute top-3 right-3 bg-white/95 border border-ink rounded-full px-3 py-1 text-[10px] font-black uppercase">
+        SolidWorks · FDM
+      </div>
+    </div>
+
+    <div class="p-6 sm:p-7 flex flex-col flex-1">
+      <div class="text-[10px] font-black uppercase tracking-[0.16em] text-cobalt mb-2">
+        Engenharia · Desenvolvimento CAD
+      </div>
+
+      <h3 class="text-xl sm:text-2xl lg:text-[26px] leading-tight font-black font-heading text-ink group-hover:text-coral transition-colors">
+        Suporte de Mesa Ergonômico
+      </h3>
+
+      <p class="text-sm text-ink/70 font-medium mt-3 leading-relaxed">
+        Desenvolvimento paramétrico orientado à fabricação, do requisito funcional à peça produzida.
+      </p>
+
+      <div class="mt-auto pt-5 flex items-center justify-between gap-3 border-t border-ink/15 mt-6">
+        <span class="text-[11px] sm:text-xs font-extrabold text-ink/65">
+          Problema → CAD → Fabricação
+        </span>
+
+        <span class="w-9 h-9 shrink-0 rounded-full border-2 border-ink bg-lime flex items-center justify-center font-black group-hover:bg-coral group-hover:text-white transition-colors">
+          ↗
+        </span>
+      </div>
           </div>
         </article>
 
