@@ -129,5 +129,5 @@ export const spanish: Record<string, string> = {
 "Pós-graduação · outubro de 2024 a abril de 2026": "Posgrado · octubre de 2024 a abril de 2026",
 "Design de Produto": "Diseño de Producto",
 "Graduação · 2021 a abril de 2024": "Grado · 2021 a abril de 2024",
-"Fotos da peça fabricada e instalada no controle, modelo GLB interativo e arquivo STL para download.": "Fotos de la pieza fabricada e instalada en el mando, modelo GLB interactivo y archivo STL para descargar."
+"Fotos da peça fabricada e instalada no controle e visualização interativa do modelo 3D.": "Fotos de la pieza fabricada e instalada en el mando y visualización interactiva del modelo 3D."
 };
