@@ -75,3 +75,12 @@
 .photo-zoom{touch-action:pan-y}
 .photo-zoom img{user-select:none;-webkit-user-drag:none}
 @media(max-width:760px){.photo-zoom-hint{font-size:10px;max-width:95%;white-space:normal;text-align:center}}
+
+/* Directional photo navigation inside the expanded card. */
+.photo-zoom .zoom-slide{position:absolute;inset:0;animation-duration:.48s;animation-timing-function:cubic-bezier(.22,1,.36,1);animation-fill-mode:both;pointer-events:none}
+.slide-in-left{animation-name:photo-in-left}.slide-in-right{animation-name:photo-in-right}
+.slide-out-left{animation-name:photo-out-left}.slide-out-right{animation-name:photo-out-right}
+@keyframes photo-in-left{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes photo-in-right{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes photo-out-left{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@keyframes photo-out-right{from{transform:translateX(0)}to{transform:translateX(100%)}}
