@@ -71,3 +71,7 @@
 .photo-zoom img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
 .photo-zoom-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);padding:7px 12px;border-radius:30px;background:#faf7eee8;color:#141414;font-size:11px;font-weight:800;white-space:nowrap}
 .photo-zoom:not(.is-open) .photo-zoom-hint{visibility:hidden}
+
+.photo-zoom{touch-action:pan-y}
+.photo-zoom img{user-select:none;-webkit-user-drag:none}
+@media(max-width:760px){.photo-zoom-hint{font-size:10px;max-width:95%;white-space:normal;text-align:center}}
