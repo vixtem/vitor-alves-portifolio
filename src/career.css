@@ -21,3 +21,23 @@
 @media(min-width:761px){.site-header .wordmark{width:230px}.nav-links{gap:24px}}
 @media(max-width:760px){.site-header .wordmark{font-size:26px;min-height:34px}.site-header{gap:12px}.header-actions{gap:7px}.languages{gap:6px}.languages button{padding:9px 3px}.languages svg{width:23px}}
 @media(prefers-reduced-motion:reduce){.wordmark .wordmark-reveal{transition:none!important}}
+/* Nome completo sem cortar as letras */
+.wordmark span {
+  flex-shrink: 0;
+}
+
+.wordmark .wordmark-reveal {
+  color: #ff4625;
+}
+
+.wordmark:hover .wordmark-first,
+.wordmark:focus-visible .wordmark-first {
+  max-width: 2.3em;
+  padding-right: .22em;
+}
+
+.wordmark:hover .wordmark-last,
+.wordmark:focus-visible .wordmark-last {
+  max-width: 2.5em;
+  padding-right: .08em;
+}
