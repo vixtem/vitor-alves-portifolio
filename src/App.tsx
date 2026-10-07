@@ -8,7 +8,7 @@ import './career.css';
 const ThreeViewer = lazy(() => import('./components/ThreeViewer').then(m => ({ default: m.ThreeViewer })));
 const base = import.meta.env.BASE_URL;
 // Add project photos at these paths; unavailable files stay out of the carousel.
-const projectPhotos = ['hero-piece.png', 'hero-piece-2.png', 'hero-piece-3.png'];
+const projectPhotos = ['foto01.jpeg', 'foto02.jpeg', 'foto03.jpeg'];
 type Project = typeof projects[number];
 
 function initialLanguage(): Language {
