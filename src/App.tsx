@@ -1,49 +1,75 @@
-import React, { useState } from 'react';
-import { Marquee } from './components/Marquee';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { Stats } from './components/Stats';
-import { Projects } from './components/Projects';
-import { Services } from './components/Services';
-import { About } from './components/About';
-import { CtaBanner } from './components/CtaBanner';
-import { QuoteModal } from './components/QuoteModal';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { ArrowDown, ArrowUpRight, Box, Check, Download, Globe2, Mail, Menu, MoveUpRight, Printer, X } from 'lucide-react';
+import { Copy, email, Language, projects, skills } from './data/career';
+import './career.css';
 
-export const App: React.FC = () => {
-  const [quoteOpen, setQuoteOpen] = useState(false);
-  const [quoteContext, setQuoteContext] = useState<string | undefined>();
+const ThreeViewer = lazy(() => import('./components/ThreeViewer').then(m => ({ default: m.ThreeViewer })));
+const base = import.meta.env.BASE_URL;
+type Project = typeof projects[number];
 
-  const handleOpenQuote = (context?: string) => {
-    setQuoteContext(context);
-    setQuoteOpen(true);
-  };
+function initialLanguage(): Language {
+  return new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'pt';
+}
 
-  return (
-    <div className="min-h-screen flex flex-col justify-between bg-cream text-ink antialiased selection:bg-lime selection:text-ink">
-      {/* Top Banner */}
-      <Marquee />
+export default function App() {
+  const [language, setLanguage] = useState<Language>(initialLanguage);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [filter, setFilter] = useState('all');
+  const [selected, setSelected] = useState<Project | null>(null);
+  const [viewModel, setViewModel] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const t = (pt: string, en: string) => language === 'pt' ? pt : en;
+  const c = (copy: Copy) => copy[language];
+  const home = `${base}index.html?lang=${language}`;
+  const isCases = window.location.pathname.endsWith('/cases.html');
+  const link = (hash: string) => isCases ? `${home}#${hash}` : `#${hash}`;
 
-      {/* Navigation */}
-      <Navbar onOpenQuote={handleOpenQuote} />
+  useEffect(() => {
+    document.documentElement.lang = language === 'pt' ? 'pt-BR' : 'en';
+    document.title = language === 'pt' ? 'Vitor Alves — Design de Produto & Manufatura Aditiva' : 'Vitor Alves — Product Design & Additive Manufacturing';
+    document.querySelector('meta[name="description"]')?.setAttribute('content', language === 'pt' ? 'Portfólio profissional de Vitor Alves: CAD, engenharia reversa, prototipagem e manufatura aditiva para aplicações industriais.' : 'Vitor Alves professional portfolio: CAD, reverse engineering, prototyping and additive manufacturing for industrial applications.');
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', language);
+    window.history.replaceState(null, '', url);
+  }, [language]);
 
-      {/* Main Sections */}
-      <main className="flex-grow">
-        <Hero onOpenQuote={handleOpenQuote} />
-        <Stats />
-        <Projects onOpenQuote={handleOpenQuote} />
-        <Services />
-        <About />
-        <CtaBanner onOpenQuote={handleOpenQuote} />
-      </main>
+  async function copyEmail() {
+    try { await navigator.clipboard.writeText(email); setCopied(true); }
+    catch { window.location.href = `mailto:${email}`; }
+  }
 
-      {/* Quote Dialog */}
-      <QuoteModal
-        isOpen={quoteOpen}
-        contextTitle={quoteContext}
-        onClose={() => setQuoteOpen(false)}
-      />
-    </div>
-  );
-};
-
-export default App;
+  return <div className="career-site">
+    <div className="topline"><span>CAD / DESIGN / ADDITIVE MANUFACTURING</span><span>{t('São Luís, Brasil → oportunidades internacionais', 'São Luís, Brazil → international opportunities')}</span></div>
+    <header className="site-header shell">
+      <a className="wordmark" href={home} aria-label={t('Vitor Alves — início', 'Vitor Alves — home')}>VA<span>®</span></a>
+      <nav aria-label={t('Navegação principal', 'Main navigation')} className={menuOpen ? 'nav-links open' : 'nav-links'}>
+        {[[t('Projetos', 'Projects'), 'projects'], [t('Experiência', 'Experience'), 'experience'], [t('Sobre', 'About'), 'about']].map(([label, id]) => <a key={id} href={link(id)} onClick={() => setMenuOpen(false)}>{label}</a>)}
+        <a href={link('contact')} onClick={() => setMenuOpen(false)}>{t('Contato', 'Contact')} <ArrowUpRight size={15} /></a>
+      </nav>
+      <div className="header-actions"><div className="languages" aria-label={t('Idioma do site', 'Site language')}><button aria-pressed={language === 'pt'} onClick={() => setLanguage('pt')}>PT</button><span>/</span><button aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>EN</button></div><button className="menu-toggle" aria-expanded={menuOpen} aria-label={t('Abrir ou fechar menu', 'Toggle menu')} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
+    </header>
+    <main>
+      {!isCases && <>
+        <section className="hero shell" aria-labelledby="hero-title">
+          <div className="hero-copy"><p className="eyebrow"><span className="status-dot" />{t('Portfólio profissional / Vitor Alves', 'Professional portfolio / Vitor Alves')}</p><h1 id="hero-title">{t('Design que', 'Design that')}<br />{t('ganha', 'takes')} <span>{t('forma.', 'shape.')}</span></h1><p className="role">{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</p><p className="intro">{t('Conecto modelagem 3D, engenharia reversa e prototipagem ao desenvolvimento de peças e soluções para aplicações industriais.', 'I connect 3D modeling, reverse engineering and prototyping to the development of parts and solutions for industrial applications.')}</p><div className="button-row"><a className="button primary" href="#projects">{t('Explorar projetos', 'Explore projects')} <ArrowDown size={18} /></a><a className="button secondary" href="#experience">{t('Conhecer minha trajetória', 'Explore my experience')} <ArrowUpRight size={18} /></a></div><p className="hero-note"><Globe2 size={16} />{t('Interesse em oportunidades no Brasil e no exterior.', 'Interested in opportunities in Brazil and abroad.')}</p></div>
+          <div className="hero-visual"><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className="model-stage">{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} /></Suspense> : <img src={`${base}assets/hero-piece.png`} alt={t('Imagem de peça do acervo visual do portfólio', 'Part image from the portfolio visual collection')} />}</div><div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => setViewModel(!viewModel)}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
+        </section>
+        <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>REVERSE ENGINEERING</span><span>DfAM</span><span>PROTOTYPING</span><span>FDM / RESIN</span></div></div>
+      </>}
+      <section id="projects" className="section shell"><div className="section-heading"><div><p className="eyebrow">{t('01 / Trabalho selecionado', '01 / Selected work')}</p><h2>{isCases ? t('Projetos & aplicações', 'Projects & applications') : t('Da necessidade à peça.', 'From a need to a part.')}</h2></div><p>{t('Projeto pessoal com modelo 3D e frentes de atuação em ambiente industrial.', 'A personal project with a 3D model and areas of work in industrial environments.')}</p></div>
+        {isCases && <a className="back-link" href={home}>← {t('Voltar ao início', 'Back to home')}</a>}
+        <div className="filters" aria-label={t('Filtrar projetos', 'Filter projects')}>{[['all', t('Todos', 'All')], ['industrial', t('Aplicações industriais', 'Industrial applications')], ['cad', 'CAD']].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>
+        <div className="project-grid">{projects.filter(p => filter === 'all' || p.category === filter).map(p => <button className={`project-card ${p.id}`} key={p.id} onClick={() => setSelected(p)}><div className="project-cover"><span className="project-number">{p.number}</span>{p.model ? <Box size={72} strokeWidth={1} /> : p.id === 'protection' ? <div className="technical-symbol">[<span>CAD</span>]</div> : <Printer size={72} strokeWidth={1} />}<span className="cover-caption">{p.model ? 'CAD / PERSONAL PROJECT' : 'INDUSTRIAL / APPLIED EXPERIENCE'}</span></div><div className="project-body"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag}</span>)}</div><h3>{c(p.title)} <ArrowUpRight size={22} /></h3><p>{c(p.summary)}</p><span className="project-action">{t('Conhecer o trabalho', 'Explore the work')} →</span></div></button>)}</div>
+        {!isCases && <a className="text-link" href={`${base}cases.html?lang=${language}`}>{t('Abrir página de projetos', 'Open projects page')} <ArrowUpRight size={18} /></a>}
+      </section>
+      {!isCases && <>
+        <section id="experience" className="section experience-section"><div className="shell experience-layout"><div><p className="eyebrow">{t('02 / Experiência', '02 / Experience')}</p><h2>{t('Prática industrial.', 'Industrial practice.')}<br /><span>{t('Olhar de produto.', 'A product mindset.')}</span></h2><p>{t('Atuação técnica que conecta o ambiente de produção ao desenvolvimento digital e à fabricação de componentes.', 'Technical work connecting the production environment to digital development and component manufacturing.')}</p></div><div className="experience-details"><article><span className="experience-label">3DCRIAR / {t('Manufatura aditiva', 'Additive manufacturing')}</span><h3>{t('Desenvolvimento de soluções técnicas', 'Technical solution development')}</h3><p>{t('Experiência com aplicações industriais na unidade SolarBR de São Luís, envolvendo CAD, engenharia reversa e impressão 3D.', 'Experience with industrial applications at the SolarBR facility in São Luís, involving CAD, reverse engineering and 3D printing.')}</p><ul><li>{t('Modelagem e adaptação de peças às necessidades de aplicação.', 'Modeling and adapting parts to application needs.')}</li><li>{t('Preparação e acompanhamento de impressão FDM e resina.', 'Preparation and follow-up of FDM and resin printing.')}</li><li>{t('Seleção de materiais, relatórios técnicos e documentação.', 'Material selection, technical reports and documentation.')}</li><li>{t('Interação com manutenção e equipes técnicas da fábrica.', 'Collaboration with maintenance and factory technical teams.')}</li></ul></article><article className="personal-work"><span className="experience-label">{t('Projetos pessoais', 'Personal projects')}</span><h3>{t('Exploração técnica e desenvolvimento CAD', 'Technical exploration and CAD development')}</h3><p>{t('Projetos próprios de peças, acessórios e protótipos, com foco em aprender, documentar e conectar o modelo digital à fabricação.', 'Self-directed parts, accessories and prototype projects, focused on learning, documenting and connecting digital models to manufacturing.')}</p></article></div></div></section>
+        <section id="about" className="section shell"><div className="about-layout"><div><p className="eyebrow">{t('03 / Sobre mim', '03 / About me')}</p><h2>Vitor Alves<span className="accent">.</span></h2><p className="about-lead">{t('Designer de Produto com atuação em CAD e manufatura aditiva.', 'Product designer working with CAD and additive manufacturing.')}</p><p>{t('Meu interesse está em entender necessidades reais e desenvolver soluções fabricáveis. Trabalho com modelagem paramétrica, engenharia reversa, prototipagem e documentação técnica, especialmente em aplicações industriais.', 'I am interested in understanding real needs and developing manufacturable solutions. My work includes parametric modeling, reverse engineering, prototyping and technical documentation, particularly for industrial applications.')}</p><p>{t('Busco oportunidades técnicas em design de produto, CAD e manufatura aditiva, com interesse em equipes industriais e possibilidades internacionais, especialmente em Portugal e Espanha.', 'I am seeking technical opportunities in product design, CAD and additive manufacturing, with an interest in industrial teams and international opportunities, especially in Portugal and Spain.')}</p><div className="location-pill"><Globe2 size={17} />São Luís, Maranhão · {t('Brasil', 'Brazil')}</div></div><div className="skills-grid">{skills.map((skill, i) => <article key={i}><span className="skill-index">0{i + 1}</span><h3>{c(skill.title)}</h3><p>{c(skill.items)}</p></article>)}</div></div></section>
+      </>}
+      <section id="contact" className="shell contact-section"><div className="contact-panel"><p className="eyebrow">{t('Vamos conversar', 'Let’s connect')}</p><h2>{t('Uma próxima', 'A next')}<br />{t('oportunidade.', 'opportunity.')}</h2><p>{t('Para oportunidades profissionais, colaborações técnicas e conversas sobre desenvolvimento de produtos e manufatura aditiva.', 'For career opportunities, technical collaborations and conversations about product development and additive manufacturing.')}</p><div className="button-row"><a className="button lime" href={`mailto:${email}?subject=${encodeURIComponent(t('Oportunidade profissional — Vitor Alves', 'Career opportunity — Vitor Alves'))}`}><Mail size={18} />{t('Entrar em contato', 'Get in touch')}</a><button className="button dark" onClick={copyEmail}>{copied ? <Check size={18} /> : <Mail size={18} />}{copied ? t('E-mail copiado', 'Email copied') : t('Copiar e-mail', 'Copy email')}</button></div><a className="email-link" href={`mailto:${email}`}>{email}</a><span className="sr-only" role="status">{copied ? t('E-mail copiado', 'Email copied') : ''}</span></div></section>
+    </main>
+    <footer className="shell site-footer"><span>© {new Date().getFullYear()} Vitor Alves</span><span>{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</span><a href={home}>{t('Início', 'Home')} ↑</a></footer>
+    <Dialog.Root open={selected !== null} onOpenChange={open => { if (!open) setSelected(null); }}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="project-dialog"><Dialog.Close className="dialog-close" aria-label={t('Fechar projeto', 'Close project')}><X /></Dialog.Close>{selected && <><p className="eyebrow">{selected.tags.join(' / ')}</p><Dialog.Title>{c(selected.title)}</Dialog.Title><Dialog.Description>{c(selected.summary)}</Dialog.Description>{selected.model && <div className="dialog-model"><Suspense fallback={<p>{t('Carregando modelo…', 'Loading model…')}</p>}><ThreeViewer language={language} /></Suspense></div>}<div className="case-details">{[[t('Contexto', 'Context'), selected.context], [t('Minha contribuição', 'My contribution'), selected.contribution], [t('Evidências disponíveis', 'Available evidence'), selected.evidence]].map(([label, copy], i) => <article key={i}><h3>{label as string}</h3><p>{c(copy as Copy)}</p></article>)}</div>{selected.model && <div className="button-row"><a className="button primary" href={`${base}assets/stl/Ponteira_controle_T8L.stl`} download><Download size={18} />{t('Baixar STL', 'Download STL')}</a><a className="button secondary" href={`${base}assets/glb/Ponteira_controle_T8L_v2.glb`} download><Download size={18} />{t('Baixar GLB', 'Download GLB')}</a></div>}</>}</Dialog.Content></Dialog.Portal></Dialog.Root>
+  </div>;
+}

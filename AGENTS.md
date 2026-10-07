@@ -1,6 +1,6 @@
 # Diretrizes do Projeto & Documentação para Agentes
 
-Este projeto é um portfólio web de alta conversão para modelagem 3D CAD, design de produto e manufatura aditiva (impressão 3D).
+Este projeto é um portfólio pessoal e profissional de Vitor Alves, voltado a oportunidades de emprego e colaboração técnica no Brasil e no exterior. Não adicionar fluxos de venda ou orçamento. Não inventar métricas, credenciais, datas, fluência ou projetos.
 
 ## Stack Tecnológica
 - **Framework**: React 18 + TypeScript + Vite
@@ -21,15 +21,12 @@ Este projeto é um portfólio web de alta conversão para modelagem 3D CAD, desi
 - Títulos: `Archivo` (Black 900) e `Plus Jakarta Sans`
 - Corpo: `Plus Jakarta Sans` e `Inter`
 
-## Estrutura de Componentes (`src/components/`)
-- `Marquee.tsx`: Faixa contínua superior
-- `Navbar.tsx`: Navegação com logo, links de rolagem e CTA
-- `Hero.tsx`: Headline "DO CAD À PEÇA REAL", badges e ThreeViewer
-- `ThreeViewer.tsx`: Canvas 3D interativo
-- `Stats.tsx`: Barra de métricas animadas em azul cobalto
-- `Projects.tsx`: Grade de projetos recentes e filtros
-- `ProjectModal.tsx`: Ficha técnica de cada peça
-- `Services.tsx`: Seção "O que eu faço" em verde neon
-- `About.tsx`: Biografia e formação em engenharia mecânica
-- `CtaBanner.tsx`: Chamada final para fabricação e rodapé
-- `QuoteModal.tsx`: Modal interativo com exportação WhatsApp / E-mail
+## Estrutura atual
+- `src/App.tsx`: app compartilhado entre início e cases, com conteúdo PT/EN.
+- `src/data/career.ts`: conteúdo profissional e projetos verificáveis.
+- `src/career.css`: layout responsivo.
+- `src/components/ThreeViewer.tsx`: modelo GLB real, carregado sob demanda.
+- `index.html` e `cases.html`: entradas Vite.
+
+## Verificação
+Executar `npm run build` e `npm run lint`. Conferir navegação e assets em subdiretório. Usar `import.meta.env.BASE_URL` para arquivos públicos e preservar a identidade visual. Não adicionar currículo ou links sociais sem conteúdo verificado.
