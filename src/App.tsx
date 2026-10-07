@@ -59,7 +59,7 @@ export default function App() {
   return <div className="career-site">
     <div className="topline"><span>{t('CAD / DESIGN / MANUFATURA ADITIVA', 'CAD / DESIGN / ADDITIVE MANUFACTURING')}</span><span>{t('São Luís, Brasil → oportunidades internacionais', 'São Luís, Brazil → international opportunities')}</span></div>
     <header className="site-header shell">
-      <a className="wordmark" href={home} aria-label={t('Vitor Alves — início', 'Vitor Alves — home')}>VA<span>®</span></a>
+      <a className="wordmark" href={home} aria-label={t('Vitor Alves — início', 'Vitor Alves — home')}><span className="wordmark-initial" aria-hidden="true">V</span><span className="wordmark-reveal wordmark-first" aria-hidden="true">itor</span><span className="wordmark-initial" aria-hidden="true">A</span><span className="wordmark-reveal wordmark-last" aria-hidden="true">lves</span></a>
       <nav aria-label={t('Navegação principal', 'Main navigation')} className={menuOpen ? 'nav-links open' : 'nav-links'}>
         {[[t('Projetos', 'Projects'), 'projects'], [t('Experiência', 'Experience'), 'experience'], [t('Sobre', 'About'), 'about']].map(([label, id]) => <a key={id} href={link(id)} onClick={() => setMenuOpen(false)}>{label}</a>)}
         <a href={link('contact')} onClick={() => setMenuOpen(false)}>{t('Contato', 'Contact')} <ArrowUpRight size={15} /></a>

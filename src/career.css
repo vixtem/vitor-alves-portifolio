@@ -10,3 +10,14 @@
 .contact-form .button.primary{background-color:#c52c11;color:#fff;border:2px solid #141414;font-weight:800}
 .contact-form .button.primary:disabled{background-color:#e3dfd5;color:#535047;border-color:#918b7e;opacity:1}
 .contact-form .button.primary:not(:disabled):hover{background-color:#a8230c;color:#fff}
+
+/* Expand initials into the name without replacing or fading the initials. */
+.wordmark{display:inline-flex;align-items:baseline;flex-shrink:0;white-space:nowrap;line-height:1.2;min-height:52px}
+.wordmark span{font-size:inherit;vertical-align:baseline;letter-spacing:inherit;margin-left:0}
+.wordmark .wordmark-reveal{display:inline-block;max-width:0;opacity:0;overflow:hidden;transform:translateX(-.18em);transition:max-width .65s cubic-bezier(.22,1,.36,1),opacity .4s ease,transform .65s cubic-bezier(.22,1,.36,1),padding-right .65s cubic-bezier(.22,1,.36,1)}
+.wordmark:hover .wordmark-reveal,.wordmark:focus-visible .wordmark-reveal{opacity:1;transform:translateX(0)}
+.wordmark:hover .wordmark-first,.wordmark:focus-visible .wordmark-first{max-width:1.85em;padding-right:.22em}
+.wordmark:hover .wordmark-last,.wordmark:focus-visible .wordmark-last{max-width:1.85em}
+@media(min-width:761px){.site-header .wordmark{width:230px}.nav-links{gap:24px}}
+@media(max-width:760px){.site-header .wordmark{font-size:26px;min-height:34px}.site-header{gap:12px}.header-actions{gap:7px}.languages{gap:6px}.languages button{padding:9px 3px}.languages svg{width:23px}}
+@media(prefers-reduced-motion:reduce){.wordmark .wordmark-reveal{transition:none!important}}
