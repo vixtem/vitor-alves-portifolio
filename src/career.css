@@ -4,3 +4,9 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}.career-site *{transition:none!important;animation:none!important}}
 
 .contact-dialog{max-width:620px}.contact-form{display:flex;flex-direction:column;gap:10px;margin-top:24px}.contact-form>label,.contact-form legend{font-size:12px;font-weight:800}.contact-form>input,.contact-form textarea{width:100%;padding:12px;border:1px solid #14141460;border-radius:10px;background:white;color:#141414;font:inherit;font-size:14px}.contact-form textarea{resize:vertical;min-height:130px}.contact-form fieldset{border:0;padding:8px 0 16px}.contact-form fieldset label{display:inline-flex;align-items:center;gap:8px;margin:12px 22px 0 0;font-size:13px}.contact-form input:focus-visible,.contact-form textarea:focus-visible{outline:3px solid #1f51ff;outline-offset:2px}.contact-form button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Contact dialog is rendered in a portal, outside the career-site variables. */
+.project-dialog{--ink:#141414;--orange:#ff4625;--paper:#faf7ee;--blue:#1f51ff}
+.contact-form .button.primary{background-color:#c52c11;color:#fff;border:2px solid #141414;font-weight:800}
+.contact-form .button.primary:disabled{background-color:#e3dfd5;color:#535047;border-color:#918b7e;opacity:1}
+.contact-form .button.primary:not(:disabled):hover{background-color:#a8230c;color:#fff}
