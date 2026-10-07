@@ -41,3 +41,6 @@
   max-width: 2.5em;
   padding-right: .08em;
 }
+
+/* Green accent on the revealed surname. */
+.wordmark .wordmark-last{color:var(--lime,#c6f226)}
