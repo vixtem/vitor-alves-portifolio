@@ -23,6 +23,7 @@ export default function App() {
   const [selected, setSelected] = useState<Project | null>(null);
   const [viewModel, setViewModel] = useState(false);
   const [expandedPhoto, setExpandedPhoto] = useState<number | null>(null);
+  const [resetZoomOrigin, setResetZoomOrigin] = useState(false);
   const photoAreaRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const ignoreClickUntil = useRef(0);
@@ -105,9 +106,15 @@ export default function App() {
           <div className="hero-copy"><p className="eyebrow"><span className="status-dot" />{t('Portfólio profissional / Vitor Alves', 'Professional portfolio / Vitor Alves')}</p><h1 id="hero-title">{t('Design que', 'Design that')}<br />{t('ganha', 'takes')} <span>{t('forma.', 'shape.')}</span></h1><p className="role">{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</p><p className="intro">{t('Conecto modelagem 3D, engenharia reversa e prototipagem ao desenvolvimento de peças e soluções para aplicações industriais.', 'I connect 3D modeling, reverse engineering and prototyping to the development of parts and solutions for industrial applications.')}</p><div className="button-row"><a className="button primary" href="#projects">{t('Explorar projetos', 'Explore projects')} <ArrowDown size={18} /></a><a className="button secondary" href="#experience">{t('Conhecer minha trajetória', 'Explore my experience')} <ArrowUpRight size={18} /></a></div><p className="hero-note"><Globe2 size={16} />{t('Interesse em oportunidades no Brasil e no exterior.', 'Interested in opportunities in Brazil and abroad.')}</p></div>
           <div className="hero-visual" ref={photoAreaRef}><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className="model-stage">{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} /></Suspense> : <div className="photo-triptych" onClick={() => setExpandedPhoto(null)}>{projectPhotos.map((file, index) => <button key={file} className={expandedPhoto === index ? "triptych-photo expanded" : "triptych-photo"} aria-label={`${photoLabel} ${index + 1}`} aria-expanded={expandedPhoto === index} onClick={event => { event.stopPropagation(); const button = event.currentTarget;
 const stage = button.parentElement?.parentElement;
+setExpandedPhoto(null);
+setResetZoomOrigin(true);
+setPhotoSlide(null);
 setPhotoOrigin({ left: button.offsetLeft, top: stage?.offsetTop ?? 0, width: button.offsetWidth, height: button.offsetHeight });
 setZoomPhoto(index);
-requestAnimationFrame(() => requestAnimationFrame(() => setExpandedPhoto(index))); }}><img src={`${base}assets/${file}`} alt={`${photoLabel} ${index + 1}`} /><span className="photo-count">0{index + 1}</span></button>)}</div>}</div>{!viewModel && <button className={expandedPhoto === null ? "photo-zoom" : "photo-zoom is-open"} style={expandedPhoto === null ? { left: photoOrigin.left, top: photoOrigin.top, width: photoOrigin.width, height: photoOrigin.height } : { left: 0, top: 0, width: '100%', height: '100%' }} aria-label={language === 'es' ? 'Reducir foto' : language === 'en' ? 'Collapse photo' : 'Reduzir foto'} aria-hidden={expandedPhoto === null} tabIndex={expandedPhoto === null ? -1 : 0} onTouchStart={event => {
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  setResetZoomOrigin(false);
+  requestAnimationFrame(() => setExpandedPhoto(index));
+})); }}><img src={`${base}assets/${file}`} alt={`${photoLabel} ${index + 1}`} /><span className="photo-count">0{index + 1}</span></button>)}</div>}</div>{!viewModel && <button className={resetZoomOrigin ? "photo-zoom reset-origin" : expandedPhoto === null ? "photo-zoom" : "photo-zoom is-open"} style={expandedPhoto === null ? { left: photoOrigin.left, top: photoOrigin.top, width: photoOrigin.width, height: photoOrigin.height } : { left: 0, top: 0, width: '100%', height: '100%' }} aria-label={language === 'es' ? 'Reducir foto' : language === 'en' ? 'Collapse photo' : 'Reduzir foto'} aria-hidden={expandedPhoto === null} tabIndex={expandedPhoto === null ? -1 : 0} onTouchStart={event => {
       if (event.touches.length !== 1) { swipeStart.current = null; return; }
       swipeStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY };
     }} onTouchEnd={event => {
