@@ -49,15 +49,15 @@
 .languages button[aria-pressed="false"] svg{filter:grayscale(100%)}
 .languages button[aria-pressed="true"] svg{filter:none}
 
-/* Fill the photo card while keeping the complete portrait-oriented part visible. */
-.photo-stage{position:relative;isolation:isolate;overflow:hidden;background-size:0 0;background-position:center;background-repeat:no-repeat}
-.photo-stage::before{content:"";position:absolute;inset:-24px;background-image:inherit;background-size:cover;background-position:center;filter:blur(18px);opacity:.5;z-index:-2}
-.photo-stage::after{content:"";position:absolute;inset:0;background:#faf7ee55;z-index:-1}
-.model-stage.photo-stage img{width:auto;max-width:90%;height:92%;object-fit:contain;padding:0;border-radius:14px;box-shadow:0 12px 30px #14141430}
 
-/* Project photo carousel controls. */
-.photo-stage .photo-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:38px;height:38px;display:grid;place-items:center;border:1px solid #141414;border-radius:50%;background:#faf7eef2;color:#141414;box-shadow:2px 2px 0 #141414}
-.photo-prev{left:12px}.photo-next{right:12px}
-.photo-stage .photo-dots{position:absolute;bottom:10px;width:auto;height:auto;display:flex;gap:8px;padding:7px 10px;border-radius:20px;background:#faf7eef2;z-index:2}
-.photo-dots button{width:10px;height:10px;padding:0;border:1px solid #141414;border-radius:50%;background:#14141430}
-.photo-dots button[aria-pressed=true]{background:var(--orange)}
+/* Three project photos, with expansion contained inside the card. */
+.model-stage .photo-triptych{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:100%;height:100%;background:var(--ink);overflow:hidden}
+.photo-triptych .triptych-photo{position:relative;min-width:0;width:100%;height:100%;padding:0;border:0;overflow:hidden;background:#e8e4dc;cursor:zoom-in}
+.model-stage .triptych-photo img{display:block;width:100%;height:100%;padding:0;object-fit:cover;object-position:center;transition:transform .3s ease}
+.triptych-photo:hover img{transform:scale(1.04)}
+.photo-count{position:absolute;bottom:12px;left:12px;padding:5px 8px;border-radius:20px;background:#faf7eee8;color:#141414;font-size:10px;font-weight:800}
+.model-stage .photo-triptych.has-expanded{grid-template-columns:1fr;padding:12px;background:#e8e4dc}
+.photo-triptych .triptych-photo.expanded{cursor:zoom-out;background:transparent}
+.model-stage .triptych-photo.expanded img{object-fit:contain;transform:none}
+.triptych-photo[hidden]{display:none}
+.triptych-photo:focus-visible{outline:3px solid var(--orange);outline-offset:-3px}
