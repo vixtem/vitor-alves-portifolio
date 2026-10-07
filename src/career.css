@@ -87,3 +87,9 @@
 
 /* Reposition invisibly before opening so every zoom starts at its own photo. */
 .photo-zoom.reset-origin{transition:none!important;opacity:0;pointer-events:none}
+
+/* Active photo indicators in the expanded view. */
+.photo-zoom-indicators{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:24px;background:#141414a6;pointer-events:none}
+.zoom-dot{width:8px;height:8px;border-radius:50%;background:#ffffff80;transition:width .25s ease,background .25s ease}
+.zoom-dot.active{width:22px;border-radius:8px;background:var(--lime,#c6f226)}
+.photo-zoom:not(.is-open) .photo-zoom-indicators{visibility:hidden}
