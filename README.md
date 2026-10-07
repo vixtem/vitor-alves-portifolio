@@ -1,83 +1,36 @@
-# Vitor Alves — Estúdio de Produto & Impressão 3D
+# Vitor Alves — Portfólio profissional
 
-Portfólio moderno para **Modelagem 3D CAD**, **Design de Produto** e **Manufatura Aditiva (Impressão 3D)**.
+Site pessoal focado em oportunidades profissionais e colaborações técnicas em design de produto, CAD, engenharia reversa e manufatura aditiva. Versões em português e inglês, selecionadas por `?lang=pt` ou `?lang=en`.
 
-Estruturado na arquitetura padrão da indústria com **Vite**, **React 18**, **TypeScript**, **Tailwind CSS**, **Bun** e componentes no padrão **shadcn/ui**.
+## Executar
 
----
-
-## 📁 Estrutura de Arquivos do Ecossistema
-
-Esta estrutura segue exatamente a organização de projetos modernos React/Vite/Bun:
-
-```
-portfolio-vitor-alves/
-├── public/                 # Arquivos públicos e estáticos servidos diretamente
-│   └── assets/             # Imagens otimizadas das peças reais e projetos
-│       ├── hero-piece.png
-│       ├── project-ergonomic.png
-│       ├── project-lattice.png
-│       └── project-prosthetic.png
-├── src/                    # Código-fonte da aplicação React + TypeScript
-│   ├── components/         # Componentes modulares da interface
-│   │   ├── ui/             # Componentes base no padrão shadcn/ui (Button, Badge...)
-│   │   ├── Marquee.tsx     # Ticker contínuo superior
-│   │   ├── Navbar.tsx      # Barra de navegação e menu responsivo
-│   │   ├── Hero.tsx        # Hero section com tipografia imponente
-│   │   ├── ThreeViewer.tsx # Visualizador 3D WebGL (Three.js) com órbita e inspeção CAD
-│   │   ├── Stats.tsx       # Barra de métricas em azul cobalto
-│   │   ├── Projects.tsx    # Galeria com filtros e modal de detalhes
-│   │   ├── ProjectModal.tsx# Ficha técnica detalhada (material, tolerância, processo)
-│   │   ├── Services.tsx    # Seção "O que eu faço" em verde neon
-│   │   ├── About.tsx       # Biografia e formação em engenharia
-│   │   ├── CtaBanner.tsx   # Chamada final de conversão e rodapé
-│   │   └── QuoteModal.tsx  # Modal de orçamento com integração para WhatsApp
-│   ├── data/               # Dados desacoplados de projetos e configurações
-│   │   └── portfolioData.ts
-│   ├── lib/                # Utilitários (ex: cn do Tailwind/clsx)
-│   │   └── utils.ts
-│   ├── types/              # Definições de tipos TypeScript
-│   │   └── index.ts
-│   ├── App.tsx             # Componente raiz da aplicação
-│   ├── main.tsx            # Ponto de entrada React 18
-│   └── index.css           # Estilos globais e diretivas do Tailwind
-├── .gitignore              # Ignora node_modules, dist e arquivos locais
-├── .prettierignore         # Ignora arquivos de build na formatação
-├── .prettierrc             # Configuração de estilo de código Prettier
-├── AGENTS.md               # Diretrizes de arquitetura para agentes e IAs
-├── bun.lock                # Lockfile de dependências do Bun
-├── bunfig.toml             # Configurações do gerenciador Bun
-├── components.json         # Configuração de componentes shadcn/ui
-├── eslint.config.js        # Configuração do ESLint 9 (Flat config)
-├── package.json            # Scripts de build, dependências e metadados
-├── README.md               # Documentação completa do projeto
-├── tsconfig.json           # Configurações do compilador TypeScript
-├── vite.config.ts          # Configurações do Vite (React plugin e aliases @/)
-├── index.html              # Ponto de entrada HTML do Vite
-└── tailwind.config.ts      # Configuração do Tailwind CSS
-```
-
----
-
-## 🚀 Como Executar o Projeto
-
-### Com Bun (Recomendado)
 ```bash
-bun install
-bun dev
-```
-Acesse em: `http://localhost:8080/`
-
-### Opção 3: Com Node / NPM
-```bash
-npm install
+npm ci
 npm run dev
+npm run build
+npm run preview
 ```
 
-### Build para Produção
-```bash
-bun run build
-# ou
-npm run build
-```
-Os arquivos otimizados para deploy serão gerados na pasta `dist/`.
+## Estrutura
+
+- `index.html` e `cases.html`: entradas HTML processadas pelo Vite.
+- `src/main.tsx`: inicializa o mesmo app React nas duas páginas.
+- `src/App.tsx`: navegação, idioma, projetos, experiência, competências e contato.
+- `src/data/career.ts`: dados bilíngues, projetos e e-mail.
+- `src/career.css`: layout responsivo do portfólio.
+- `src/components/ThreeViewer.tsx`: visualizador GLB carregado sob demanda.
+- `public/assets`: arquivos públicos; URLs de produção não incluem `public/`.
+
+`cases.html` exibe os projetos; a página inicial também inclui experiência e perfil profissional. Não há fluxo de orçamento ou projetos fictícios apresentados como trabalhos realizados.
+
+## Conteúdo
+
+A ponteira T8L tem arquivos GLB e STL reais no repositório. Os dois cards industriais são resumos de frentes de atuação, sem imagens ou métricas atribuídas a peças específicas. Para transformá-los em cases documentados, adicione fotos autorizadas, contexto e resultados comprovados em `src/data/career.ts`. A imagem do hero é identificada como parte do acervo visual; o botão 3D abre o modelo da ponteira T8L.
+
+Não foram inventados datas de emprego, certificações, fluência em idiomas, links de redes sociais ou disponibilidade de visto. O site não contém currículo para download: inclua um PDF atualizado e verificado antes de oferecer esse link.
+
+## Publicação
+
+O workflow `.github/workflows/deploy.yml` publica `dist/` no GitHub Pages quando há push na `main`. `vite.config.ts` usa `base: './'`, e os assets e links usam `import.meta.env.BASE_URL`, permitindo publicação na raiz ou em uma pasta. Use `/cases.html`; GitHub Pages não oferece automaticamente a rota `/cases`.
+
+Antes de publicar, valide `npm run build` e `npm run lint` e confira as duas páginas, idiomas, links, download STL/GLB, menu mobile e visualizador sob o prefixo de publicação.

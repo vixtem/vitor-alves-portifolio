@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export const ThreeViewer: React.FC = () => {
+export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' }> = ({ language = 'pt' }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -10,6 +10,9 @@ export const ThreeViewer: React.FC = () => {
   const modelRef = useRef<THREE.Group | null>(null);
 
   useEffect(() => {
+    let disposed = false;
+    setIsLoading(true);
+    setLoadError(false);
     const container = mountRef.current;
     if (!container) return;
 
@@ -109,6 +112,16 @@ export const ThreeViewer: React.FC = () => {
 
       (gltf) => {
         const model = gltf.scene;
+        if (disposed) {
+          model.traverse(child => {
+            if (child instanceof THREE.Mesh) {
+              child.geometry.dispose();
+              const materials = Array.isArray(child.material) ? child.material : [child.material];
+              materials.forEach(material => material.dispose());
+            }
+          });
+          return;
+        }
 
         // Shadows
         model.traverse((child) => {
@@ -174,6 +187,7 @@ export const ThreeViewer: React.FC = () => {
       undefined,
 
       (error) => {
+        if (disposed) return;
         console.error(
           'Erro ao carregar o modelo GLB:',
           error
@@ -409,7 +423,15 @@ export const ThreeViewer: React.FC = () => {
     // ----------------------------------------
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(reqId);
+      scene.traverse(child => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry.dispose();
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          materials.forEach(material => material.dispose());
+        }
+      });
 
       container.removeEventListener(
         'mousedown',
@@ -475,7 +497,7 @@ export const ThreeViewer: React.FC = () => {
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-ink text-white text-xs font-black uppercase px-4 py-2 rounded-full">
-            Carregando 3D...
+            {language === 'pt' ? 'Carregando 3D...' : 'Loading 3D...'}
           </div>
         </div>
       )}
@@ -485,7 +507,7 @@ export const ThreeViewer: React.FC = () => {
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <div className="bg-white border-2 border-ink rounded-xl p-4 text-center brutal-shadow">
             <p className="text-sm font-black text-ink">
-              Não foi possível carregar o modelo 3D.
+              {language === 'pt' ? 'Não foi possível carregar o modelo 3D.' : 'Unable to load the 3D model.'}
             </p>
           </div>
         </div>
@@ -494,7 +516,7 @@ export const ThreeViewer: React.FC = () => {
       {/* Interaction Help */}
       {!isLoading && !loadError && (
         <div className="absolute bottom-3 left-3 bg-ink/80 text-white text-[11px] font-bold px-3 py-1 rounded-full pointer-events-none">
-          Arraste para girar
+          {language === 'pt' ? 'Arraste para girar' : 'Drag to rotate'}
         </div>
       )}
 
