@@ -96,5 +96,15 @@ export const spanish: Record<string, string> = {
   "INDUSTRIAL / EXPERIÊNCIA APLICADA": "INDUSTRIAL / EXPERIENCIA APLICADA",
   "ENGENHARIA REVERSA": "INGENIERÍA INVERSA",
   "PROTOTIPAGEM": "PROTOTIPADO",
-  "FDM / RESINA": "FDM / RESINA"
+  "FDM / RESINA": "FDM / RESINA",
+  "Nome": "Nombre",
+  "Fechar contato": "Cerrar contacto",
+  "Escreva sua mensagem": "Escribe tu mensaje",
+  "Escolha WhatsApp ou e-mail. A mensagem será aberta no aplicativo escolhido para você confirmar o envio.": "Elige WhatsApp o correo electrónico. El mensaje se abrirá en la aplicación elegida para que confirmes el envío.",
+  "Nome (opcional)": "Nombre (opcional)",
+  "Mensagem": "Mensaje",
+  "Como deseja enviar?": "¿Cómo deseas enviarlo?",
+  "E-mail": "Correo electrónico",
+  "Continuar no WhatsApp": "Continuar en WhatsApp",
+  "Continuar no e-mail": "Continuar en el correo"
 };
