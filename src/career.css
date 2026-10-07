@@ -84,3 +84,6 @@
 @keyframes photo-in-right{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 @keyframes photo-out-left{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 @keyframes photo-out-right{from{transform:translateX(0)}to{transform:translateX(100%)}}
+
+/* Reposition invisibly before opening so every zoom starts at its own photo. */
+.photo-zoom.reset-origin{transition:none!important;opacity:0;pointer-events:none}
