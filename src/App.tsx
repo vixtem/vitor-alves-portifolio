@@ -1,12 +1,14 @@
 import { spanish } from './data/spanish';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowDown, ArrowUpRight, Box, Check, Download, Globe2, Instagram, Linkedin, Mail, Menu, MoveUpRight, Printer, X } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, ChevronLeft, ChevronRight, Box, Check, Download, Globe2, Instagram, Linkedin, Mail, Menu, MoveUpRight, Printer, X } from 'lucide-react';
 import { Copy, email, whatsappNumber, Language, projects, skills } from './data/career';
 import './career.css';
 
 const ThreeViewer = lazy(() => import('./components/ThreeViewer').then(m => ({ default: m.ThreeViewer })));
 const base = import.meta.env.BASE_URL;
+// Add project photos at these paths; unavailable files stay out of the carousel.
+const projectPhotos = ['hero-piece.png', 'hero-piece-2.png', 'hero-piece-3.png'];
 type Project = typeof projects[number];
 
 function initialLanguage(): Language {
@@ -20,6 +22,25 @@ export default function App() {
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState<Project | null>(null);
   const [viewModel, setViewModel] = useState(false);
+  const [photos, setPhotos] = useState([projectPhotos[0]]);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const activePhoto = photos[photoIndex];
+  const photoLabel = language === 'es' ? 'Foto del proyecto' : language === 'en' ? 'Project photo' : 'Foto do projeto';
+  const previousPhoto = language === 'es' ? 'Foto anterior' : language === 'en' ? 'Previous photo' : 'Foto anterior';
+  const nextPhoto = language === 'es' ? 'Foto siguiente' : language === 'en' ? 'Next photo' : 'Próxima foto';
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all(projectPhotos.map(file => new Promise<string | null>(resolve => {
+      const image = new Image();
+      image.onload = () => resolve(file);
+      image.onerror = () => resolve(null);
+      image.src = `${base}assets/${file}`;
+    }))).then(files => {
+      if (!cancelled) setPhotos(files.filter((file): file is string => file !== null).length ? files.filter((file): file is string => file !== null) : [projectPhotos[0]]);
+    });
+    return () => { cancelled = true; };
+  }, []);
+  const changePhoto = (direction: number) => setPhotoIndex(index => (index + direction + photos.length) % photos.length);
   const [contactOpen, setContactOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [senderName, setSenderName] = useState('');
@@ -70,7 +91,7 @@ export default function App() {
       {!isCases && <>
         <section className="hero shell" aria-labelledby="hero-title">
           <div className="hero-copy"><p className="eyebrow"><span className="status-dot" />{t('Portfólio profissional / Vitor Alves', 'Professional portfolio / Vitor Alves')}</p><h1 id="hero-title">{t('Design que', 'Design that')}<br />{t('ganha', 'takes')} <span>{t('forma.', 'shape.')}</span></h1><p className="role">{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</p><p className="intro">{t('Conecto modelagem 3D, engenharia reversa e prototipagem ao desenvolvimento de peças e soluções para aplicações industriais.', 'I connect 3D modeling, reverse engineering and prototyping to the development of parts and solutions for industrial applications.')}</p><div className="button-row"><a className="button primary" href="#projects">{t('Explorar projetos', 'Explore projects')} <ArrowDown size={18} /></a><a className="button secondary" href="#experience">{t('Conhecer minha trajetória', 'Explore my experience')} <ArrowUpRight size={18} /></a></div><p className="hero-note"><Globe2 size={16} />{t('Interesse em oportunidades no Brasil e no exterior.', 'Interested in opportunities in Brazil and abroad.')}</p></div>
-          <div className="hero-visual"><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className={viewModel ? "model-stage" : "model-stage photo-stage"} style={viewModel ? undefined : { backgroundImage: `url("${base}assets/hero-piece.png")` }}>{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} /></Suspense> : <img src={`${base}assets/hero-piece.png`} alt={t('Imagem de peça do acervo visual do portfólio', 'Part image from the portfolio visual collection')} />}</div><div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => setViewModel(!viewModel)}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
+          <div className="hero-visual"><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className={viewModel ? "model-stage" : "model-stage photo-stage"} style={viewModel ? undefined : { backgroundImage: `url("${base}assets/${activePhoto}")` }}>{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} /></Suspense> : <><img key={activePhoto} src={`${base}assets/${activePhoto}`} alt={`${photoLabel} ${photoIndex + 1}`} />{photos.length > 1 && <><button className="photo-arrow photo-prev" aria-label={previousPhoto} onClick={() => changePhoto(-1)}><ChevronLeft size={22} /></button><button className="photo-arrow photo-next" aria-label={nextPhoto} onClick={() => changePhoto(1)}><ChevronRight size={22} /></button><div className="photo-dots">{photos.map((file, index) => <button key={file} aria-label={`${photoLabel} ${index + 1}`} aria-pressed={index === photoIndex} onClick={() => setPhotoIndex(index)} />)}</div><span className="sr-only" aria-live="polite">{photoLabel} {photoIndex + 1} / {photos.length}</span></>}</>}</div><div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => setViewModel(!viewModel)}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
         </section>
         <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>{t('ENGENHARIA REVERSA', 'REVERSE ENGINEERING')}</span><span>DfAM</span><span>{t('PROTOTIPAGEM', 'PROTOTYPING')}</span><span>{t('FDM / RESINA', 'FDM / RESIN')}</span></div></div>
       </>}
