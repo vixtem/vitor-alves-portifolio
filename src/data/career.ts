@@ -1,7 +1,8 @@
-export type Language = 'pt' | 'en';
-export type Copy = { pt: string; en: string };
+import { spanish } from './spanish';
+export type Language = 'pt' | 'en' | 'es';
+export type Copy = { pt: string; en: string; es: string };
 export const email = 'vitoralves.cad@gmail.com';
-export const text = (pt: string, en: string): Copy => ({ pt, en });
+export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
     id: 't8l', number: '01', category: 'cad', tags: ['Fusion 360', 'CAD', 'FDM'], model: true,

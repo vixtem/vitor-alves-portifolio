@@ -1,6 +1,6 @@
 # Vitor Alves — Portfólio profissional
 
-Site pessoal focado em oportunidades profissionais e colaborações técnicas em design de produto, CAD, engenharia reversa e manufatura aditiva. Versões em português e inglês, selecionadas por `?lang=pt` ou `?lang=en`.
+Site pessoal focado em oportunidades profissionais e colaborações técnicas em design de produto, CAD, engenharia reversa e manufatura aditiva. Versões em português, inglês e espanhol, selecionadas por `?lang=pt`  , `?lang=en` ou `?lang=es`.
 
 ## Executar
 
@@ -16,7 +16,7 @@ npm run preview
 - `index.html` e `cases.html`: entradas HTML processadas pelo Vite.
 - `src/main.tsx`: inicializa o mesmo app React nas duas páginas.
 - `src/App.tsx`: navegação, idioma, projetos, experiência, competências e contato.
-- `src/data/career.ts`: dados bilíngues, projetos e e-mail.
+- `src/data/career.ts`: dados multilíngues, projetos e e-mail.
 - `src/career.css`: layout responsivo do portfólio.
 - `src/components/ThreeViewer.tsx`: visualizador GLB carregado sob demanda.
 - `public/assets`: arquivos públicos; URLs de produção não incluem `public/`.

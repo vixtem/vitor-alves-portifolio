@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' }> = ({ language = 'pt' }) => {
+export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ language = 'pt' }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -497,7 +497,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' }> = ({ language = '
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-ink text-white text-xs font-black uppercase px-4 py-2 rounded-full">
-            {language === 'pt' ? 'Carregando 3D...' : 'Loading 3D...'}
+            {language === 'es' ? 'Cargando 3D...' : language === 'pt' ? 'Carregando 3D...' : 'Loading 3D...'}
           </div>
         </div>
       )}
@@ -507,7 +507,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' }> = ({ language = '
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <div className="bg-white border-2 border-ink rounded-xl p-4 text-center brutal-shadow">
             <p className="text-sm font-black text-ink">
-              {language === 'pt' ? 'Não foi possível carregar o modelo 3D.' : 'Unable to load the 3D model.'}
+              {language === 'es' ? 'No se pudo cargar el modelo 3D.' : language === 'pt' ? 'Não foi possível carregar o modelo 3D.' : 'Unable to load the 3D model.'}
             </p>
           </div>
         </div>
@@ -516,7 +516,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' }> = ({ language = '
       {/* Interaction Help */}
       {!isLoading && !loadError && (
         <div className="absolute bottom-3 left-3 bg-ink/80 text-white text-[11px] font-bold px-3 py-1 rounded-full pointer-events-none">
-          {language === 'pt' ? 'Arraste para girar' : 'Drag to rotate'}
+          {language === 'es' ? 'Arrastra para girar' : language === 'pt' ? 'Arraste para girar' : 'Drag to rotate'}
         </div>
       )}
 
