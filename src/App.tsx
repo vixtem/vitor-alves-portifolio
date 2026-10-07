@@ -24,6 +24,15 @@ export default function App() {
   const [viewModel, setViewModel] = useState(false);
   const [expandedPhoto, setExpandedPhoto] = useState<number | null>(null);
   const photoAreaRef = useRef<HTMLDivElement>(null);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+  const ignoreClickUntil = useRef(0);
+  const navigateZoom = (direction: number) => {
+    const index = (zoomPhoto + direction + projectPhotos.length) % projectPhotos.length;
+    const column = photoAreaRef.current?.querySelectorAll<HTMLButtonElement>('.triptych-photo')[index];
+    if (column) setPhotoOrigin({ left: column.offsetLeft, top: column.parentElement?.parentElement?.offsetTop ?? 0, width: column.offsetWidth, height: column.offsetHeight });
+    setZoomPhoto(index);
+    setExpandedPhoto(index);
+  };
   const [zoomPhoto, setZoomPhoto] = useState(0);
   const [photoOrigin, setPhotoOrigin] = useState({ left: 0, top: 0, width: 0, height: 0 });
   const photoLabel = language === 'es' ? 'Foto del proyecto' : language === 'en' ? 'Project photo' : 'Foto do projeto';
@@ -96,7 +105,27 @@ export default function App() {
 const stage = button.parentElement?.parentElement;
 setPhotoOrigin({ left: button.offsetLeft, top: stage?.offsetTop ?? 0, width: button.offsetWidth, height: button.offsetHeight });
 setZoomPhoto(index);
-requestAnimationFrame(() => requestAnimationFrame(() => setExpandedPhoto(index))); }}><img src={`${base}assets/${file}`} alt={`${photoLabel} ${index + 1}`} /><span className="photo-count">0{index + 1}</span></button>)}</div>}</div>{!viewModel && <button className={expandedPhoto === null ? "photo-zoom" : "photo-zoom is-open"} style={expandedPhoto === null ? { left: photoOrigin.left, top: photoOrigin.top, width: photoOrigin.width, height: photoOrigin.height } : { left: 0, top: 0, width: '100%', height: '100%' }} aria-label={language === 'es' ? 'Reducir foto' : language === 'en' ? 'Collapse photo' : 'Reduzir foto'} aria-hidden={expandedPhoto === null} tabIndex={expandedPhoto === null ? -1 : 0} onClick={() => setExpandedPhoto(null)}><img src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-hint">{language === 'es' ? 'Haz clic para reducir' : language === 'en' ? 'Click to collapse' : 'Clique para reduzir'}</span></button>}<div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
+requestAnimationFrame(() => requestAnimationFrame(() => setExpandedPhoto(index))); }}><img src={`${base}assets/${file}`} alt={`${photoLabel} ${index + 1}`} /><span className="photo-count">0{index + 1}</span></button>)}</div>}</div>{!viewModel && <button className={expandedPhoto === null ? "photo-zoom" : "photo-zoom is-open"} style={expandedPhoto === null ? { left: photoOrigin.left, top: photoOrigin.top, width: photoOrigin.width, height: photoOrigin.height } : { left: 0, top: 0, width: '100%', height: '100%' }} aria-label={language === 'es' ? 'Reducir foto' : language === 'en' ? 'Collapse photo' : 'Reduzir foto'} aria-hidden={expandedPhoto === null} tabIndex={expandedPhoto === null ? -1 : 0} onTouchStart={event => {
+      if (event.touches.length !== 1) { swipeStart.current = null; return; }
+      swipeStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }} onTouchEnd={event => {
+      const start = swipeStart.current;
+      swipeStart.current = null;
+      if (!start || !event.changedTouches.length) return;
+      const dx = event.changedTouches[0].clientX - start.x;
+      const dy = event.changedTouches[0].clientY - start.y;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        ignoreClickUntil.current = Date.now() + 700;
+        navigateZoom(dx < 0 ? 1 : -1);
+      } else if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        ignoreClickUntil.current = Date.now() + 700;
+      }
+    }} onTouchCancel={() => { swipeStart.current = null; }} onKeyDown={event => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        event.preventDefault();
+        navigateZoom(event.key === 'ArrowRight' ? 1 : -1);
+      }
+    }} onClick={() => { if (Date.now() >= ignoreClickUntil.current) setExpandedPhoto(null); }}><img src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-hint">{language === 'es' ? 'Desliza para cambiar · Toca para reducir' : language === 'en' ? 'Swipe to browse · Tap to collapse' : 'Deslize para trocar · Toque para reduzir'}</span></button>}<div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
         </section>
         <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>{t('ENGENHARIA REVERSA', 'REVERSE ENGINEERING')}</span><span>DfAM</span><span>{t('PROTOTIPAGEM', 'PROTOTYPING')}</span><span>{t('FDM / RESINA', 'FDM / RESIN')}</span></div></div>
       </>}
