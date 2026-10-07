@@ -44,3 +44,7 @@
 
 /* Green accent on the revealed surname. */
 .wordmark .wordmark-last{color:var(--lime,#c6f226)}
+
+/* Keep only the selected language flag in color. */
+.languages button[aria-pressed="false"] svg{filter:grayscale(100%)}
+.languages button[aria-pressed="true"] svg{filter:none}
