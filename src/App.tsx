@@ -26,7 +26,9 @@ export default function App() {
   const photoAreaRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const ignoreClickUntil = useRef(0);
+  const [photoSlide, setPhotoSlide] = useState<{ previous: number; direction: number; id: number } | null>(null);
   const navigateZoom = (direction: number) => {
+    setPhotoSlide({ previous: zoomPhoto, direction, id: Date.now() });
     const index = (zoomPhoto + direction + projectPhotos.length) % projectPhotos.length;
     const column = photoAreaRef.current?.querySelectorAll<HTMLButtonElement>('.triptych-photo')[index];
     if (column) setPhotoOrigin({ left: column.offsetLeft, top: column.parentElement?.parentElement?.offsetTop ?? 0, width: column.offsetWidth, height: column.offsetHeight });
@@ -125,7 +127,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => setExpandedPhoto(index))
         event.preventDefault();
         navigateZoom(event.key === 'ArrowRight' ? 1 : -1);
       }
-    }} onClick={() => { if (Date.now() >= ignoreClickUntil.current) setExpandedPhoto(null); }}><img src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-hint">{language === 'es' ? 'Desliza para cambiar · Toca para reducir' : language === 'en' ? 'Swipe to browse · Tap to collapse' : 'Deslize para trocar · Toque para reduzir'}</span></button>}<div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
+    }} onClick={() => { if (Date.now() >= ignoreClickUntil.current) setExpandedPhoto(null); }}>{photoSlide && <img key={`out-${photoSlide.id}`} className={photoSlide.direction > 0 ? "zoom-slide slide-out-left" : "zoom-slide slide-out-right"} src={`${base}assets/${projectPhotos[photoSlide.previous]}`} alt="" aria-hidden="true" />}<img key={photoSlide?.id ?? 'initial'} className={photoSlide ? photoSlide.direction > 0 ? "zoom-slide slide-in-left" : "zoom-slide slide-in-right" : undefined} src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-hint">{language === 'es' ? 'Desliza para cambiar · Toca para reducir' : language === 'en' ? 'Swipe to browse · Tap to collapse' : 'Deslize para trocar · Toque para reduzir'}</span></button>}<div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
         </section>
         <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>{t('ENGENHARIA REVERSA', 'REVERSE ENGINEERING')}</span><span>DfAM</span><span>{t('PROTOTIPAGEM', 'PROTOTYPING')}</span><span>{t('FDM / RESINA', 'FDM / RESIN')}</span></div></div>
       </>}
