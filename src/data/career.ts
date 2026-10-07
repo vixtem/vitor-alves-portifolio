@@ -11,7 +11,7 @@ export const projects = [
     summary: text('Modelagem de um acessório para controle de rádio, com arquivo 3D disponível para inspeção interativa.', 'A radio controller accessory, with a 3D model available for interactive inspection.'),
     context: text('Projeto pessoal de acessório para o controle RadioMaster T8L.', 'A personal accessory project for the RadioMaster T8L controller.'),
     contribution: text('Desenvolvimento da geometria CAD e preparação de arquivos para fabricação aditiva.', 'CAD geometry development and preparation of files for additive manufacturing.'),
-    evidence: text('Fotos da peça fabricada e instalada no controle, modelo GLB interativo e arquivo STL para download.', 'Photos of the manufactured part installed on the controller, an interactive GLB model and a downloadable STL file.'),
+    evidence: text('Fotos da peça fabricada e instalada no controle e visualização interativa do modelo 3D.', 'Photos of the manufactured part installed on the controller and interactive viewing of the 3D model.'),
   },
   {
     id: 'protection', number: '02', category: 'industrial', tags: ['CAD', 'FDM', 'Engenharia reversa'], model: false,
