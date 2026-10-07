@@ -32,6 +32,8 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ langu
     );
 
     camera.position.set(0, 1.2, 4);
+    // Aim at the centered model instead of looking parallel to the ground.
+    camera.lookAt(0, 0, 0);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
