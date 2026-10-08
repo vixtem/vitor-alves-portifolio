@@ -122,3 +122,28 @@
   .gallery-next{right:max(12px,env(safe-area-inset-right))}
   .gallery-dots{bottom:max(16px,env(safe-area-inset-bottom))}
 }
+
+.theme-toggle{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border:1px solid currentColor;border-radius:50%;background:transparent;color:inherit}
+html[data-theme=dark]{background:#17191c;color:#faf7ee}
+html[data-theme=dark] .career-site{--paper:#17191c;--ink:#faf7ee;--blue:#8daaff}
+html[data-theme=dark] .site-header{border-color:#ffffff30}
+html[data-theme=dark] .wordmark .wordmark-reveal{color:#faf7ee}
+html[data-theme=dark] .intro,html[data-theme=dark] .hero-note,html[data-theme=dark] .section-heading>p,html[data-theme=dark] .project-body p,html[data-theme=dark] .experience-layout>div>p:not(.eyebrow),html[data-theme=dark] .experience-details p,html[data-theme=dark] .experience-details li,html[data-theme=dark] .about-layout p:not(.eyebrow),html[data-theme=dark] .site-footer{color:#c5c7cd}
+html[data-theme=dark] .menu-toggle,html[data-theme=dark] .filters button,html[data-theme=dark] .project-card{color:#faf7ee}
+html[data-theme=dark] .filters button{border-color:#ffffff60}
+html[data-theme=dark] .filters button[aria-pressed=true]{background:#faf7ee;color:#141414}
+html[data-theme=dark] .experience-section{background:#22252a;border-color:#ffffff30}
+html[data-theme=dark] .skills-grid article,html[data-theme=dark] .location-pill,html[data-theme=dark] .project-action,html[data-theme=dark] .experience-details .personal-work{border-color:#ffffff40}
+html[data-theme=dark] .tags span{background:#ffffff0c;border-color:#ffffff40}
+html[data-theme=dark] .hero-visual{background:#25282d}
+html[data-theme=dark] .visual-label,html[data-theme=dark] .project-cover{color:#141414}
+html[data-theme=dark] .expertise-strip{background:#244bd2}
+html[data-theme=dark] .contact-panel{background:#0b0c0e}
+html[data-theme=dark] .lime{color:#141414}
+html[data-theme=dark] .project-dialog{--paper:#22252a;--ink:#faf7ee;--blue:#8daaff;background:#22252a;color:#faf7ee;border-color:#faf7ee;box-shadow:6px 6px 0 #050506}
+html[data-theme=dark] .project-dialog>p,html[data-theme=dark] .case-details p{color:#c5c7cd}
+html[data-theme=dark] .dialog-close{background:#17191c;border-color:#faf7ee;color:#faf7ee}
+html[data-theme=dark] .dialog-model{border-color:#ffffff40}
+html[data-theme=dark] .contact-form>input,html[data-theme=dark] .contact-form textarea{background:#17191c;color:#faf7ee;border-color:#ffffff60}
+@media(max-width:760px){.site-header{gap:8px}.header-actions{gap:7px}.languages{gap:6px}.languages button{padding:7px 3px}.site-header .wordmark{width:auto}}
+@media(max-width:380px){.site-header .wordmark{font-size:23px}.header-actions{gap:5px}.languages{gap:3px}.theme-toggle{width:30px;height:30px}}
