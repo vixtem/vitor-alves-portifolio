@@ -27,7 +27,7 @@
 }
 
 .wordmark .wordmark-reveal {
-  color: #ff4625;
+  color: #141414;
 }
 
 .wordmark:hover .wordmark-first,
@@ -43,7 +43,7 @@
 }
 
 /* Green accent on the revealed surname. */
-.wordmark .wordmark-last{color:var(--lime,#c6f226)}
+.wordmark .wordmark-last{color:#141414}
 
 /* Keep only the selected language flag in color. */
 .languages button[aria-pressed="false"] svg{filter:grayscale(100%)}
