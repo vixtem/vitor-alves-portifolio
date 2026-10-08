@@ -2,7 +2,7 @@ import { ProjectGallery } from './components/ProjectGallery';
 import { spanish } from './data/spanish';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowDown, ArrowUpRight, Box, Download, Globe2, Instagram, Linkedin, Mail, Menu, MoveUpRight, Printer, X } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Box, Download, Globe2, Instagram, Linkedin, Mail, Menu, Moon, Sun, MoveUpRight, Printer, X } from 'lucide-react';
 import { Copy, email, whatsappNumber, Language, projects, skills } from './data/career';
 import './career.css';
 
@@ -19,6 +19,19 @@ function initialLanguage(): Language {
 
 export default function App() {
   const [language, setLanguage] = useState<Language>(initialLanguage);
+  const [darkMode, setDarkMode] = useState(() => {
+    try { const saved = localStorage.getItem('portfolio-theme'); if (saved) return saved === 'dark'; } catch { /* Storage may be unavailable. */ }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = darkMode ? 'dark' : 'light';
+    document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light';
+  }, [darkMode]);
+  const toggleTheme = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    try { localStorage.setItem('portfolio-theme', next ? 'dark' : 'light'); } catch { /* Keep the in-memory preference. */ }
+  };
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState<Project | null>(null);
@@ -94,7 +107,7 @@ export default function App() {
         {[[t('Projetos', 'Projects'), 'projects'], [t('Experiência', 'Experience'), 'experience'], [t('Sobre', 'About'), 'about']].map(([label, id]) => <a key={id} href={link(id)} onClick={() => setMenuOpen(false)}>{label}</a>)}
         <a href={link('contact')} onClick={() => setMenuOpen(false)}>{t('Contato', 'Contact')} <ArrowUpRight size={15} /></a>
       </nav>
-      <div className="header-actions"><div className="languages" aria-label={t('Idioma do site', 'Site language')}><button aria-label="Português" title="Português" style={{ borderRadius: 5, boxShadow: language === 'pt' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'pt'} onClick={() => setLanguage('pt')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#009739"/><path d="M13 2 24 9 13 16 2 9Z" fill="#ffdf00"/><circle cx="13" cy="9" r="4.4" fill="#002776"/><path d="M8.8 8.3q4.4-1 8.1 2" fill="none" stroke="white" strokeWidth="1"/></svg></button><span>/</span><button aria-label="English" title="English — United Kingdom" style={{ borderRadius: 5, boxShadow: language === 'en' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'en'} onClick={() => setLanguage('en')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#012169"/><path d="M0 0 26 18M26 0 0 18" stroke="#fff" strokeWidth="4"/><path d="m0 0 13 9m13 9-13-9m13-9L13 9M0 18l13-9" stroke="#c8102e" strokeWidth="1.5"/><path d="M13 0v18M0 9h26" stroke="#fff" strokeWidth="6"/><path d="M13 0v18M0 9h26" stroke="#c8102e" strokeWidth="3"/></svg></button><span>/</span><button aria-label="Español" title="Español" style={{ borderRadius: 5, boxShadow: language === 'es' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'es'} onClick={() => setLanguage('es')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#aa151b"/><path d="M0 4.5h26v9H0z" fill="#f1bf00"/><path d="M7 7h3v4H7zM7.5 6h2v1h-2z" fill="#aa151b"/></svg></button></div><button className="menu-toggle" aria-expanded={menuOpen} aria-label={t('Abrir ou fechar menu', 'Toggle menu')} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
+      <div className="header-actions"><button className="theme-toggle" onClick={toggleTheme} aria-pressed={darkMode} aria-label={language === 'es' ? 'Alternar modo oscuro' : language === 'en' ? 'Toggle dark mode' : 'Alternar modo noturno'} title={language === 'es' ? 'Alternar modo oscuro' : language === 'en' ? 'Toggle dark mode' : 'Alternar modo noturno'}>{darkMode ? <Sun size={20} /> : <Moon size={20} />}</button><div className="languages" aria-label={t('Idioma do site', 'Site language')}><button aria-label="Português" title="Português" style={{ borderRadius: 5, boxShadow: language === 'pt' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'pt'} onClick={() => setLanguage('pt')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#009739"/><path d="M13 2 24 9 13 16 2 9Z" fill="#ffdf00"/><circle cx="13" cy="9" r="4.4" fill="#002776"/><path d="M8.8 8.3q4.4-1 8.1 2" fill="none" stroke="white" strokeWidth="1"/></svg></button><span>/</span><button aria-label="English" title="English — United Kingdom" style={{ borderRadius: 5, boxShadow: language === 'en' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'en'} onClick={() => setLanguage('en')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#012169"/><path d="M0 0 26 18M26 0 0 18" stroke="#fff" strokeWidth="4"/><path d="m0 0 13 9m13 9-13-9m13-9L13 9M0 18l13-9" stroke="#c8102e" strokeWidth="1.5"/><path d="M13 0v18M0 9h26" stroke="#fff" strokeWidth="6"/><path d="M13 0v18M0 9h26" stroke="#c8102e" strokeWidth="3"/></svg></button><span>/</span><button aria-label="Español" title="Español" style={{ borderRadius: 5, boxShadow: language === 'es' ? '0 0 0 2px #ff4625' : 'none' }} aria-pressed={language === 'es'} onClick={() => setLanguage('es')}><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><rect width="26" height="18" rx="2" fill="#aa151b"/><path d="M0 4.5h26v9H0z" fill="#f1bf00"/><path d="M7 7h3v4H7zM7.5 6h2v1h-2z" fill="#aa151b"/></svg></button></div><button className="menu-toggle" aria-expanded={menuOpen} aria-label={t('Abrir ou fechar menu', 'Toggle menu')} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
     </header>
     <main>
       {!isCases && <>
