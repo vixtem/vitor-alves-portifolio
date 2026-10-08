@@ -52,7 +52,7 @@ export const spanish: Record<string, string> = {
   "03 / Sobre mim": "03 / Sobre mí",
   "Designer de Produto com atuação em CAD e manufatura aditiva.": "Diseñador de producto especializado en CAD y fabricación aditiva.",
   "Meu interesse está em entender necessidades reais e desenvolver soluções fabricáveis. Trabalho com modelagem paramétrica, engenharia reversa, prototipagem e documentação técnica, especialmente em aplicações industriais.": "Me interesa comprender necesidades reales y desarrollar soluciones fabricables. Trabajo con modelado paramétrico, ingeniería inversa, prototipado y documentación técnica, especialmente en aplicaciones industriales.",
-  "Busco oportunidades técnicas em design de produto, CAD e manufatura aditiva, com interesse em equipes industriais e possibilidades internacionais, especialmente em Portugal e Espanha.": "Busco oportunidades técnicas en diseño de producto, CAD y fabricación aditiva, con interés en equipos industriales y oportunidades internacionales, especialmente en Portugal y España.",
+  "Busco oportunidades técnicas em design de produto, CAD e manufatura aditiva, com interesse em equipes industriais e possibilidades internacionais.": "Busco oportunidades técnicas en diseño de producto, CAD y fabricación aditiva, con interés en equipos industriales y oportunidades internacionales.",
   "Brasil": "Brasil",
   "Vamos conversar": "Hablemos",
   "Uma próxima": "Una próxima",
