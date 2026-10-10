@@ -3,6 +3,11 @@ import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+// Shared palette material for all current and future STL/GLB projects.
+const createModelMaterial = () => new THREE.MeshStandardMaterial({
+  color: 0x1f51ff, roughness: 0.65, metalness: 0,
+});
+
 export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: string }> = ({ language = 'pt', modelPath = 'assets/glb/Ponteira_controle_T8L_v2.glb' }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,13 +122,19 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
           return;
         }
 
-        // Shadows
+        // Apply the site cobalt blue to every mesh, including imported GLB materials.
+        const originalMaterials = new Set<THREE.Material>();
         model.traverse((child) => {
           if (child instanceof THREE.Mesh) {
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.forEach(material => originalMaterials.add(material));
+            child.material = createModelMaterial();
             child.castShadow = true;
             child.receiveShadow = true;
           }
         });
+
+        originalMaterials.forEach(material => material.dispose());
 
         // ----------------------------------------
         // CENTRALIZAR O MODELO
@@ -192,7 +203,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
     if (modelPath.endsWith('.stl')) {
       new STLLoader().load(url, geometry => {
         geometry.computeVertexNormals();
-        const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0xe8d4af, roughness: 0.65 }));
+        const mesh = new THREE.Mesh(geometry, createModelMaterial());
         mesh.rotation.x = -Math.PI / 2;
         onLoad(mesh);
       }, undefined, onError);
