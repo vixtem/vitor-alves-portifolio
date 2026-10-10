@@ -6,7 +6,7 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
-    id: 'sabao-em-po', number: '04', category: 'cad', tags: ['Fusion 360', 'CAD', 'Manufatura Aditiva'], model: true, modelPath: 'assets/sabao-em-po/arquivo_stl_3d.stl',
+    id: 'sabao-em-po', number: '02', category: 'cad', tags: ['Fusion 360', 'CAD', 'Manufatura Aditiva'], model: true, modelPath: 'assets/sabao-em-po/arquivo_stl_3d.stl',
     photos: ['sabao-em-po/F-01_modelagem3D.png', 'sabao-em-po/F-02_Real.png', 'sabao-em-po/F-03_Real.png'],
     title: text('Recipiente de sabão em pó', 'Powder detergent dispenser'),
     summary: text('Projeto pessoal de um recipiente dosador, da modelagem no Fusion 360 à fabricação por impressão 3D.', 'A personal dispenser project, from Fusion 360 modeling to 3D printing.'),
@@ -22,22 +22,7 @@ export const projects = [
     contribution: text('Desenvolvimento da geometria CAD e preparação de arquivos para fabricação aditiva.', 'CAD geometry development and preparation of files for additive manufacturing.'),
     evidence: text('Fotos da peça fabricada e instalada no controle e visualização interativa do modelo 3D.', 'Photos of the manufactured part installed on the controller and interactive viewing of the 3D model.'),
   },
-  {
-    id: 'protection', number: '02', category: 'industrial', tags: ['CAD', 'FDM', 'Engenharia reversa'], model: false, modelPath: undefined, photos: [] as string[],
-    title: text('Proteções para componentes industriais', 'Industrial component guards'),
-    summary: text('Desenvolvimento de proteções para sensores e componentes, considerando a geometria existente e o acesso à manutenção.', 'Development of guards for sensors and components, considering existing geometry and maintenance access.'),
-    context: text('Aplicações em ambiente industrial: proteções de sensores, encoders e componentes de máquinas.', 'Industrial applications: guards for sensors, encoders and machine components.'),
-    contribution: text('Levantamento dimensional, modelagem CAD e preparação para impressão 3D de peças técnicas.', 'Dimensional assessment, CAD modeling and preparation of technical parts for 3D printing.'),
-    evidence: text('Resumo da experiência aplicada. Fotos, desenhos e resultados específicos serão incluídos conforme disponibilidade e autorização de divulgação.', 'An overview of applied experience. Photos, drawings and specific results will be added subject to availability and disclosure permission.'),
-  },
-  {
-    id: 'replacement', number: '03', category: 'industrial', tags: ['Fusion 360', 'FDM', 'DfAM'], model: false, modelPath: undefined, photos: [] as string[],
-    title: text('Componentes e soluções para manutenção', 'Components and maintenance solutions'),
-    summary: text('Experiência no desenvolvimento de tampas, suportes, guias e ferramentas para necessidades de manutenção industrial.', 'Experience developing covers, brackets, guides and tools for industrial maintenance needs.'),
-    context: text('Necessidades de manutenção e reposição de componentes em equipamentos de produção.', 'Maintenance needs and component replacement in production equipment.'),
-    contribution: text('Engenharia reversa, modelagem paramétrica, seleção de materiais e prototipagem por manufatura aditiva.', 'Reverse engineering, parametric modeling, material selection and additive manufacturing prototyping.'),
-    evidence: text('Apresentação de uma frente de atuação profissional. Não são atribuídos indicadores ou resultados a uma peça sem documentação específica.', 'An overview of a professional work area. No metrics or outcomes are attributed to an individual part without supporting documentation.'),
-  },
+
 ];
 export const skills = [
   { title: text('Desenvolvimento CAD', 'CAD development'), items: text('Fusion 360 · Modelagem paramétrica · Desenho técnico · Documentação', 'Fusion 360 · Parametric modeling · Technical drawings · Documentation') },
