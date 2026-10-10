@@ -6,6 +6,16 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
+    id: 'suporte-escovas', number: '03', category: 'cad', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'FDM', 'ABS'], model: true, modelPath: 'assets/suporte-escovas/suporte-escovas.stl',
+    photos: ['suporte-escovas/01-original.jpeg', 'suporte-escovas/02-cad.png', 'suporte-escovas/03-fatiamento.png'],
+    title: text("Suporte para escovas de motor elétrico", "Electric motor brush holder"),
+    summary: text("Engenharia reversa de um suporte danificado, com modelagem CAD e fabricação de uma peça de reposição em ABS por impressão 3D FDM.", "Reverse engineering of a damaged holder, with CAD modeling and fabrication of an ABS replacement using FDM 3D printing."),
+    context: text("Desenvolvimento de um suporte de reposição para as escovas de um motor elétrico. A peça original foi recebida quebrada e com partes faltantes, exigindo a reconstrução de sua geometria para a fabricação de um novo componente.", "Development of a replacement brush holder for an electric motor. The original part was received broken and with missing sections, requiring its geometry to be reconstructed to manufacture a new component."),
+    contribution: text("Reuni e colei os fragmentos disponíveis para recuperar a referência geométrica, realizei o levantamento dimensional e desenvolvi o modelo 3D CAD. Em seguida, fabriquei a peça de reposição em ABS utilizando impressão 3D FDM.", "I assembled and bonded the available fragments to recover a geometric reference, took dimensional measurements and developed the 3D CAD model. I then manufactured the replacement in ABS using FDM 3D printing."),
+    evidence: text("Peça funcional utilizada na substituição de um componente de motor elétrico. A documentação apresenta a peça original danificada, o modelo CAD e a preparação no fatiador para impressão 3D, além do modelo interativo para inspeção da geometria.", "A functional part used to replace an electric motor component. Documentation shows the damaged original, the CAD model and slicing preparation for 3D printing, along with an interactive model for geometry inspection."),
+  },
+
+  {
     id: 'sabao-em-po', number: '02', category: 'cad', tags: ['Fusion 360', 'CAD', 'Manufatura Aditiva'], model: true, modelPath: 'assets/sabao-em-po/arquivo_stl_3d.stl',
     photos: ['sabao-em-po/F-01_modelagem3D.png', 'sabao-em-po/F-02_Real.png', 'sabao-em-po/F-03_Real.png'],
     title: text('Recipiente de sabão em pó', 'Powder detergent dispenser'),
