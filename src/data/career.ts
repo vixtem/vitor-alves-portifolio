@@ -6,6 +6,15 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
+    id: 'valvula-retencao-ar', number: '04', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'Nylon'], model: true, modelPath: 'assets/valvula-retencao-ar/modelo.stl',
+    photos: ['valvula-retencao-ar/01-cad.png', 'valvula-retencao-ar/02-corte.png', 'valvula-retencao-ar/03-modelo.png'],
+    title: text("Válvula de retenção de ar", "Air check valve"),
+    summary: text("Replicação de uma válvula industrial com modelagem CAD e adaptação da geometria para fabricação por manufatura aditiva.", "Replication of an industrial valve through CAD modeling and geometry adaptation for additive manufacturing."),
+    context: text("Projeto desenvolvido a partir de uma válvula de retenção de ar existente, com adaptação da geometria para fabricação integral por impressão 3D. Foram consideradas a impressão FDM em nylon e a impressão em resina com propriedades semelhantes às do nylon.", "Developed from an existing air check valve, adapting its geometry for complete 3D printing. Nylon FDM printing and resin printing with nylon-like properties were considered."),
+    contribution: text("Realizei a modelagem CAD a partir da peça de referência e adaptei a geometria para manufatura aditiva. O arquivo 3D em formato STL foi preparado e entregue ao cliente para fabricação.", "I developed the CAD model from the reference part and adapted the geometry for additive manufacturing. The 3D STL file was prepared and delivered to the client for fabrication."),
+    evidence: text("Componente desenvolvido para substituir uma válvula original em uma aplicação industrial. A documentação reúne vistas do modelo CAD, incluindo uma vista em corte para visualizar a geometria interna, além do modelo 3D interativo. A fabricação ficou a cargo do cliente.", "A component developed to replace an original valve in an industrial application. Documentation includes CAD views, including a section view of the internal geometry, and an interactive 3D model. Fabrication was handled by the client."),
+  },
+  {
     id: 'suporte-escovas', number: '03', category: 'cad', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'FDM', 'ABS'], model: true, modelPath: 'assets/suporte-escovas/suporte-escovas.stl',
     photos: ['suporte-escovas/01-original.jpeg', 'suporte-escovas/02-cad.png', 'suporte-escovas/03-fatiamento.png'],
     title: text("Suporte para escovas de motor elétrico", "Electric motor brush holder"),
