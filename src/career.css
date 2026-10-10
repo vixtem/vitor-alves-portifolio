@@ -127,3 +127,6 @@
 @media(max-width:380px){.site-header .wordmark{font-size:23px}.header-actions{gap:5px}.languages{gap:3px}}
 
 html{color-scheme:light}
+
+.showcase-stage{animation:showcase-appear .6s ease both}
+@keyframes showcase-appear{from{opacity:0}to{opacity:1}}

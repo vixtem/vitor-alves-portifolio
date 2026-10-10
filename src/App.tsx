@@ -8,8 +8,9 @@ import './career.css';
 
 const ThreeViewer = lazy(() => import('./components/ThreeViewer').then(m => ({ default: m.ThreeViewer })));
 const base = import.meta.env.BASE_URL;
-// Photos displayed together in the hero card.
-const projectPhotos = ['foto01.jpeg', 'foto02.jpeg', 'foto03.jpeg'];
+// New cases with a complete triptych automatically join the showcase.
+const showcaseProjects = projects.filter(project => project.photos.length === 3);
+const showcaseInterval = 60_000;
 type Project = typeof projects[number];
 
 function initialLanguage(): Language {
@@ -22,6 +23,12 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState<Project | null>(null);
+  const [showcaseIndex, setShowcaseIndex] = useState(() => Math.floor(Math.random() * showcaseProjects.length));
+  const showcaseProject = showcaseProjects[showcaseIndex];
+  const projectPhotos = showcaseProject?.photos ?? [];
+  const [showcaseHovered, setShowcaseHovered] = useState(false);
+  const [showcaseFocused, setShowcaseFocused] = useState(false);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const [viewModel, setViewModel] = useState(false);
   const [expandedPhoto, setExpandedPhoto] = useState<number | null>(null);
   const [resetZoomOrigin, setResetZoomOrigin] = useState(false);
@@ -55,6 +62,26 @@ export default function App() {
       document.removeEventListener('keydown', closeEscape);
     };
   }, [expandedPhoto]);
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (showcaseProjects.length < 2 || viewModel || expandedPhoto !== null || showcaseHovered || showcaseFocused || !pageVisible || selected !== null) return;
+    const timer = window.setTimeout(() => {
+      setShowcaseIndex(current => {
+        const offset = 1 + Math.floor(Math.random() * (showcaseProjects.length - 1));
+        return (current + offset) % showcaseProjects.length;
+      });
+      setZoomPhoto(0);
+      setPhotoSlide(null);
+      setResetZoomOrigin(false);
+    }, showcaseInterval);
+    return () => window.clearTimeout(timer);
+  }, [showcaseIndex, viewModel, expandedPhoto, showcaseHovered, showcaseFocused, pageVisible, selected]);
+
   const [contactOpen, setContactOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [senderName, setSenderName] = useState('');
@@ -100,7 +127,7 @@ export default function App() {
       {!isCases && <>
         <section className="hero shell" aria-labelledby="hero-title">
           <div className="hero-copy"><p className="eyebrow"><span className="status-dot" />{t('Portfólio profissional / Vitor Alves', 'Professional portfolio / Vitor Alves')}</p><h1 id="hero-title">{t("Design de produto", "Product design")}<br />{t("para a", "for")} <span>{t("indústria.", "industry.")}</span></h1><p className="role">{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</p><p className="intro">{t("Desenvolvo peças técnicas para aplicações industriais, conectando levantamento dimensional, modelagem CAD, seleção de materiais e manufatura aditiva.", "I develop technical parts for industrial applications, connecting dimensional assessment, CAD modeling, material selection and additive manufacturing.")}</p><div className="button-row"><a className="button primary" href="#projects">{t('Explorar projetos', 'Explore projects')} <ArrowDown size={18} /></a><a className="button secondary" href="https://www.linkedin.com/in/vitor-alves-design" target="_blank" rel="noopener noreferrer">{t("Ver perfil profissional", "View professional profile")} <ArrowUpRight size={18} /></a></div><p className="hero-note"><Globe2 size={16} />{t('Interesse em oportunidades no Brasil e no exterior.', 'Interested in opportunities in Brazil and abroad.')}</p></div>
-          <div className="hero-visual" ref={photoAreaRef}><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className="model-stage">{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} /></Suspense> : <div className="photo-triptych" onClick={() => setExpandedPhoto(null)}>{projectPhotos.map((file, index) => <button key={file} className={expandedPhoto === index ? "triptych-photo expanded" : "triptych-photo"} aria-label={`${photoLabel} ${index + 1}`} aria-expanded={expandedPhoto === index} onClick={event => { event.stopPropagation(); const button = event.currentTarget;
+          <div className="hero-visual" ref={photoAreaRef} onMouseEnter={() => setShowcaseHovered(true)} onMouseLeave={() => setShowcaseHovered(false)} onFocusCapture={() => setShowcaseFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setShowcaseFocused(false); }}><div className="visual-label"><span>01 / {t('DO DIGITAL AO FÍSICO', 'FROM DIGITAL TO PHYSICAL')}</span><Box size={19} /></div><div className="model-stage showcase-stage" key={showcaseProject?.id}>{viewModel ? <Suspense fallback={<p>{t('Carregando visualizador…', 'Loading viewer…')}</p>}><ThreeViewer language={language} modelPath={showcaseProject.modelPath} /></Suspense> : <div className="photo-triptych" onClick={() => setExpandedPhoto(null)}>{projectPhotos.map((file, index) => <button key={file} className={expandedPhoto === index ? "triptych-photo expanded" : "triptych-photo"} aria-label={`${photoLabel} ${index + 1}`} aria-expanded={expandedPhoto === index} onClick={event => { event.stopPropagation(); const button = event.currentTarget;
 const stage = button.parentElement?.parentElement;
 setExpandedPhoto(null);
 setResetZoomOrigin(true);
@@ -130,7 +157,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
         event.preventDefault();
         navigateZoom(event.key === 'ArrowRight' ? 1 : -1);
       }
-    }} onClick={() => { if (Date.now() >= ignoreClickUntil.current) setExpandedPhoto(null); }}>{photoSlide && <img key={`out-${photoSlide.id}`} className={photoSlide.direction > 0 ? "zoom-slide slide-out-left" : "zoom-slide slide-out-right"} src={`${base}assets/${projectPhotos[photoSlide.previous]}`} alt="" aria-hidden="true" />}<img key={photoSlide?.id ?? 'initial'} className={photoSlide ? photoSlide.direction > 0 ? "zoom-slide slide-in-left" : "zoom-slide slide-in-right" : undefined} src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-indicators" aria-hidden="true">{projectPhotos.map((file, index) => <span key={file} className={zoomPhoto === index ? 'zoom-dot active' : 'zoom-dot'} />)}</span></button>}<div className="visual-footer"><span>{viewModel ? t('Ponteira T8L · modelo CAD', 'T8L stick tip · CAD model') : t('CAD → prototipagem → aplicação', 'CAD → prototyping → application')}</span><button aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
+    }} onClick={() => { if (Date.now() >= ignoreClickUntil.current) setExpandedPhoto(null); }}>{photoSlide && <img key={`out-${photoSlide.id}`} className={photoSlide.direction > 0 ? "zoom-slide slide-out-left" : "zoom-slide slide-out-right"} src={`${base}assets/${projectPhotos[photoSlide.previous]}`} alt="" aria-hidden="true" />}<img key={photoSlide?.id ?? 'initial'} className={photoSlide ? photoSlide.direction > 0 ? "zoom-slide slide-in-left" : "zoom-slide slide-in-right" : undefined} src={`${base}assets/${projectPhotos[zoomPhoto]}`} alt="" /><span className="photo-zoom-indicators" aria-hidden="true">{projectPhotos.map((file, index) => <span key={file} className={zoomPhoto === index ? 'zoom-dot active' : 'zoom-dot'} />)}</span></button>}<div className="visual-footer"><span>{c(showcaseProject.title)}{viewModel ? ' · CAD' : ''}</span><button disabled={!showcaseProject.model} aria-pressed={viewModel} onClick={() => { setViewModel(!viewModel); setExpandedPhoto(null); }}>{viewModel ? t('Ver imagem', 'View image') : t('Explorar modelo 3D', 'Explore 3D model')} <MoveUpRight size={16} /></button></div></div>
         </section>
         <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>{t('ENGENHARIA REVERSA', 'REVERSE ENGINEERING')}</span><span>DfAM</span><span>{t('PROTOTIPAGEM', 'PROTOTYPING')}</span><span>{t('FDM / RESINA', 'FDM / RESIN')}</span></div></div>
       </>}
