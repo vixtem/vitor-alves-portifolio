@@ -1,4 +1,10 @@
 export const spanish: Record<string, string> = {
+  "Recipiente de sabão em pó": "Recipiente de detergente en polvo",
+  "Projeto pessoal de um recipiente dosador, da modelagem no Fusion 360 à fabricação por impressão 3D.": "Proyecto personal de un recipiente dosificador, desde el modelado en Fusion 360 hasta la fabricación mediante impresión 3D.",
+  "Projeto pessoal desenvolvido a partir de referências encontradas na internet, com foco no armazenamento e na dosagem de sabão em pó para uso doméstico.": "Proyecto personal desarrollado a partir de referencias encontradas en internet, enfocado en el almacenamiento y la dosificación de detergente en polvo para uso doméstico.",
+  "Modelei o recipiente no Autodesk Fusion 360 a partir das referências e utilizei a manufatura aditiva para transformar o modelo digital em uma peça física funcional.": "Modelé el recipiente en Autodesk Fusion 360 a partir de las referencias y utilicé la fabricación aditiva para transformar el modelo digital en una pieza física funcional.",
+  "Desenvolvido para facilitar a retirada de pequenas doses de sabão em pó. O conceito também pode ser adaptado a outros produtos em pó, conforme suas características. A documentação reúne uma imagem do modelo CAD, duas fotos da peça fabricada e o modelo 3D para inspeção interativa.": "Desarrollado para facilitar la extracción de pequeñas dosis de detergente en polvo. El concepto también puede adaptarse a otros productos en polvo, según sus características. La documentación incluye una imagen del modelo CAD, dos fotos de la pieza fabricada y el modelo 3D para inspección interactiva.",
+  "Manufatura Aditiva": "Fabricación Aditiva",
   "São Luís, Brasil → oportunidades internacionais": "São Luís, Brasil → oportunidades internacionales",
   "Vitor Alves — início": "Vitor Alves — inicio",
   "Navegação principal": "Navegación principal",

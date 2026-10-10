@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ language = 'pt' }) => {
+export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: string }> = ({ language = 'pt', modelPath = 'assets/glb/Ponteira_controle_T8L_v2.glb' }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -104,16 +105,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ langu
     // LOAD GLB
     // ----------------------------------------
 
-    const loader = new GLTFLoader();
-
-    const modelPath =
-      `${import.meta.env.BASE_URL}assets/glb/Ponteira_controle_T8L_v2.glb`;
-
-    loader.load(
-      modelPath,
-
-      (gltf) => {
-        const model = gltf.scene;
+    const onLoad = (model: THREE.Object3D) => {
         if (disposed) {
           model.traverse(child => {
             if (child instanceof THREE.Mesh) {
@@ -184,21 +176,29 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ langu
         modelGroup.add(model);
 
         setIsLoading(false);
-      },
+      };
 
-      undefined,
-
-      (error) => {
+    const onError = (error: unknown) => {
         if (disposed) return;
         console.error(
-          'Erro ao carregar o modelo GLB:',
+          'Erro ao carregar o modelo 3D:',
           error
         );
 
         setIsLoading(false);
         setLoadError(true);
-      }
-    );
+      };
+    const url = `${import.meta.env.BASE_URL}${modelPath}`;
+    if (modelPath.endsWith('.stl')) {
+      new STLLoader().load(url, geometry => {
+        geometry.computeVertexNormals();
+        const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0xe8d4af, roughness: 0.65 }));
+        mesh.rotation.x = -Math.PI / 2;
+        onLoad(mesh);
+      }, undefined, onError);
+    } else {
+      new GLTFLoader().load(url, gltf => onLoad(gltf.scene), undefined, onError);
+    }
 
     // ----------------------------------------
     // GROUND / SHADOW
@@ -484,7 +484,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es' }> = ({ langu
 
       modelRef.current = null;
     };
-  }, []);
+  }, [modelPath]);
 
   return (
     <div className="relative w-full h-full bg-[#e8e4dc] overflow-hidden">
