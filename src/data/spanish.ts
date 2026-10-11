@@ -53,6 +53,8 @@ export const spanish: Record<string, string> = {
   "01 / Trabalho selecionado": "01 / Trabajo seleccionado",
   "Projetos & aplicações": "Proyectos y aplicaciones",
   "Da necessidade à peça.": "De la necesidad a la pieza.",
+  "Da necessidade à peça": "De la necesidad a la pieza",
+  "Real": "Real",
   "Projeto pessoal com modelo 3D e frentes de atuação em ambiente industrial.": "Proyecto personal con modelo 3D y áreas de trabajo en entornos industriales.",
   "Voltar ao início": "Volver al inicio",
   "Filtrar projetos": "Filtrar proyectos",
