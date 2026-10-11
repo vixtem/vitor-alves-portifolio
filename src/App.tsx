@@ -13,6 +13,15 @@ const showcaseProjects = projects.filter(project => project.photos.length === 3)
 const showcaseInterval = 60_000;
 type Project = typeof projects[number];
 
+function shuffleProjects() {
+  const shuffled = [...projects];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function initialLanguage(): Language {
   const lang = new URLSearchParams(window.location.search).get('lang');
   return lang === 'en' || lang === 'es' ? lang : 'pt';
@@ -93,6 +102,17 @@ export default function App() {
   const c = (copy: Copy) => copy[language];
   const home = `${base}index.html?lang=${language}`;
   const isCases = window.location.pathname.endsWith('/cases.html');
+  const [featuredProjects, setFeaturedProjects] = useState(shuffleProjects);
+  const [gridHovered, setGridHovered] = useState(false);
+  const [gridFocused, setGridFocused] = useState(false);
+  useEffect(() => {
+    if (isCases || !pageVisible || selected || gridHovered || gridFocused) return;
+    const timer = window.setInterval(() => setFeaturedProjects(shuffleProjects()), showcaseInterval);
+    return () => window.clearInterval(timer);
+  }, [isCases, pageVisible, selected, gridHovered, gridFocused]);
+  const orderedProjects = isCases ? [...projects].sort((a, b) => Number(a.number) - Number(b.number)) : featuredProjects;
+  const filteredProjects = orderedProjects.filter(p => filter === 'all' || p.category === filter || (filter === 'cad' && p.tags.includes('CAD')) || (filter === 'additive' && (p.tags.includes('FDM') || p.tags.includes('Manufatura Aditiva'))));
+  const visibleProjects = isCases ? filteredProjects : filteredProjects.slice(0, 6);
   const link = (hash: string) => isCases ? `${home}#${hash}` : `#${hash}`;
 
   useEffect(() => {
@@ -181,11 +201,11 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
         </section>
         <div className="expertise-strip"><div className="shell"><span>FUSION 360</span><span>{t('ENGENHARIA REVERSA', 'REVERSE ENGINEERING')}</span><span>DfAM</span><span>{t('PROTOTIPAGEM', 'PROTOTYPING')}</span><span>{t('FDM / RESINA', 'FDM / RESIN')}</span></div></div>
       </>}
-      <section id="projects" className="section shell"><div className="section-heading"><div><p className="eyebrow">{t('01 / Trabalho selecionado', '01 / Selected work')}</p><h2>{isCases ? t('Projetos & aplicações', 'Projects & applications') : <>{t('Da necessidade à peça', 'From a need to a')} <span className="accent">{t('Real', 'Real')}</span>.</>}</h2></div><p>{t('Projeto pessoal com modelo 3D e frentes de atuação em ambiente industrial.', 'A personal project with a 3D model and areas of work in industrial environments.')}</p></div>
+      <section id="projects" className="section shell"><div className="section-heading"><div><p className="eyebrow">{t('01 / Trabalho selecionado', '01 / Selected work')}</p><h2>{isCases ? t('Projetos & aplicações', 'Projects & applications') : <>{t('Da necessidade à peça', 'From a need to a')} <span className="accent">{t('Real', 'Real')}</span>.</>}</h2></div></div>
         {isCases && <a className="back-link" href={home}>← {t('Voltar ao início', 'Back to home')}</a>}
         <div className="filters" aria-label={t('Filtrar projetos', 'Filter projects')}>{[['all', t('Todos', 'All')], ['industrial', t('Aplicações industriais', 'Industrial applications')], ['cad', 'CAD'], ['additive', t('Manufatura Aditiva', 'Additive Manufacturing')]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>
-        <div className="project-grid">{projects.filter(p => filter === 'all' || p.category === filter || (filter === 'cad' && p.tags.includes('CAD')) || (filter === 'additive' && (p.tags.includes('FDM') || p.tags.includes('Manufatura Aditiva')))).map(p => <button className={`project-card ${p.id}`} key={p.id} onClick={() => setSelected(p)}><div className="project-cover"><span className="project-number">{p.number}</span>{p.model ? <img className="project-preview" src={`${base}assets/${p.photos[1] || p.photos[0]}`} alt={c(p.title)} loading="lazy" /> : p.id === 'protection' ? <div className="technical-symbol">[<span>CAD</span>]</div> : <Printer size={72} strokeWidth={1} />}<span className="cover-caption">{p.model ? t('CAD / PROJETO PESSOAL', 'CAD / PERSONAL PROJECT') : t('INDUSTRIAL / EXPERIÊNCIA APLICADA', 'INDUSTRIAL / APPLIED EXPERIENCE')}</span></div><div className="project-body"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag === 'Manufatura Aditiva' ? t(tag, 'Additive Manufacturing') : tag}</span>)}</div><h3>{c(p.title)} <ArrowUpRight size={22} /></h3><p>{c(p.summary)}</p><span className="project-action">{t('Conhecer o trabalho', 'Explore the work')} →</span></div></button>)}</div>
-        {!isCases && <a className="text-link" href={`${base}cases.html?lang=${language}`}>{t('Abrir página de projetos', 'Open projects page')} <ArrowUpRight size={18} /></a>}
+        <div className="project-grid" onMouseEnter={() => setGridHovered(true)} onMouseLeave={() => setGridHovered(false)} onFocus={() => setGridFocused(true)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setGridFocused(false); }}>{visibleProjects.map(p => <button className={`project-card ${p.id}`} key={p.id} onClick={() => setSelected(p)}><div className="project-cover"><span className="project-number">{p.number}</span>{p.model ? <img className="project-preview" src={`${base}assets/${p.photos[1] || p.photos[0]}`} alt={c(p.title)} loading="lazy" /> : p.id === 'protection' ? <div className="technical-symbol">[<span>CAD</span>]</div> : <Printer size={72} strokeWidth={1} />}<span className="cover-caption">{p.model ? t('CAD / PROJETO PESSOAL', 'CAD / PERSONAL PROJECT') : t('INDUSTRIAL / EXPERIÊNCIA APLICADA', 'INDUSTRIAL / APPLIED EXPERIENCE')}</span></div><div className="project-body"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag === 'Manufatura Aditiva' ? t(tag, 'Additive Manufacturing') : tag}</span>)}</div><h3>{c(p.title)} <ArrowUpRight size={22} /></h3><p>{c(p.summary)}</p><span className="project-action">{t('Conhecer o trabalho', 'Explore the work')} →</span></div></button>)}</div>
+        {!isCases && <a className="button primary projects-page-button" href={`${base}cases.html?lang=${language}`}>{t('Abrir página de projetos', 'Open projects page')} <ArrowUpRight size={18} /></a>}
       </section>
       {!isCases && <>
         <section id="experience" className="section experience-section"><div className="shell experience-layout"><div><p className="eyebrow">{t('02 / Experiência', '02 / Experience')}</p><h2>{t('Prática industrial.', 'Industrial practice.')}<br /><span>{t('Olhar de produto.', 'A product mindset.')}</span></h2><p>{t('Atuação técnica que conecta o ambiente de produção ao desenvolvimento digital e à fabricação de componentes.', 'Technical work connecting the production environment to digital development and component manufacturing.')}</p></div><div className="experience-details"><article><span className="experience-label">3DCRIAR · {t("Julho de 2024 — atual", "July 2024 — present")}</span><h3>{t("Analista de Manufatura Aditiva I — Modelador de Engenharia", "Additive Manufacturing Analyst I — Engineering Modeler")}</h3><p>{t("Modelagem CAD de peças de reposição, preparação e otimização de arquivos para impressão 3D e acompanhamento de aplicações.", "CAD modeling of replacement parts, preparation and optimization of 3D printing files, and application follow-up.")}</p><ul><li>{t("Avaliação de aplicações e mapeamento de oportunidades de manufatura aditiva.", "Application assessment and identification of additive manufacturing opportunities.")}</li><li>{t("Gestão de materiais e consumíveis, relatórios e documentação de processos.", "Materials and consumables management, reports and process documentation.")}</li></ul></article><article className="personal-work"><span className="experience-label">Fribal · {t("Abril — junho de 2024", "April — June 2024")}</span><h3>{t("Assistente de projetos", "Project Assistant")}</h3><p>{t("Apoio ao levantamento de necessidades, cronogramas, planilhas, apresentações e organização da documentação de projetos.", "Support with requirements gathering, schedules, spreadsheets, presentations and project documentation.")}</p><p>{t("Trajetória anterior na Fribal: atendimento, atividades administrativas e faturamento, de 2014 a 2024.", "Earlier experience at Fribal: customer service, administration and billing, from 2014 to 2024.")}</p></article></div></div></section>
