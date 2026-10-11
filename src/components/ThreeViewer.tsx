@@ -200,7 +200,15 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
         setLoadError(true);
       };
     const url = `${import.meta.env.BASE_URL}${modelPath}`;
-    if (modelPath.endsWith('.stl')) {
+    if (modelPath.endsWith('.glb.gz')) {
+      fetch(url).then(async response => {
+        if (!response.ok || !response.body) throw new Error('Unable to fetch model');
+        const stream = response.body.pipeThrough(new DecompressionStream('gzip'));
+        const data = await new Response(stream).arrayBuffer();
+        const gltf = await new GLTFLoader().parseAsync(data, '');
+        onLoad(gltf.scene);
+      }).catch(onError);
+    } else if (modelPath.endsWith('.stl')) {
       new STLLoader().load(url, geometry => {
         geometry.computeVertexNormals();
         const mesh = new THREE.Mesh(geometry, createModelMaterial());

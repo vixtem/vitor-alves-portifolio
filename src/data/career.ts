@@ -6,6 +6,15 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
+    id: 'protecao-polia', number: '05', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Escaneamento 3D', 'FDM', 'PET'], model: true, modelPath: 'assets/protecao-polia/modelo.glb.gz',
+    photos: ['protecao-polia/01-scan.png', 'protecao-polia/02-cad.png', 'protecao-polia/03-aplicacao.png'],
+    title: text("Proteção da polia orientadora", "Guide pulley guard"),
+    summary: text("Proteção industrial desenvolvida a partir de escaneamento 3D, com modelagem CAD e fabricação em PET por impressão 3D FDM.", "Industrial guard developed from 3D scanning, with CAD modeling and PET fabrication using FDM 3D printing."),
+    context: text("O escaneamento 3D do conjunto foi utilizado como referência para desenvolver uma proteção adaptada à geometria existente em um equipamento da indústria de bebidas.", "A 3D scan of the assembly was used as a reference to develop a guard adapted to the existing geometry of beverage industry equipment."),
+    contribution: text("Desenvolvi a modelagem CAD com base no escaneamento 3D e dividi a proteção em duas partes. Em seguida, as peças foram fabricadas em PET utilizando impressão 3D FDM.", "I developed the CAD model based on the 3D scan and divided the guard into two parts. The parts were then fabricated in PET using FDM 3D printing."),
+    evidence: text("Aplicação de proteção de componentes em um equipamento da indústria de bebidas, voltada à segurança no ambiente industrial. A documentação apresenta o escaneamento como referência, a proteção modelada e a peça instalada, além do modelo 3D interativo.", "A component guard for beverage industry equipment, intended to support safety in the industrial environment. Documentation shows the scan reference, the modeled guard and the installed part, along with an interactive 3D model."),
+  },
+  {
     id: 'valvula-retencao-ar', number: '04', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'Nylon'], model: true, modelPath: 'assets/valvula-retencao-ar/modelo.stl',
     photos: ['valvula-retencao-ar/01-cad.png', 'valvula-retencao-ar/02-corte.png', 'valvula-retencao-ar/03-modelo.png'],
     title: text("Válvula de retenção de ar", "Air check valve"),
