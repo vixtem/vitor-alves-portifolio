@@ -6,6 +6,15 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
+    id: 'tensionador-corrente', number: '06', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'FDM', 'Nylon'], model: true, modelPath: 'assets/tensionador-corrente/modelo.stl',
+    photos: ['tensionador-corrente/01-cad.png', 'tensionador-corrente/02-cad.png', 'tensionador-corrente/03-fabricada.png'],
+    title: text("Tensionador de corrente", "Chain tensioner"),
+    summary: text("Reconstrução de um tensionador a partir da peça original danificada, com modelagem CAD e fabricação em nylon preto por impressão 3D FDM.", "Reconstruction of a tensioner from the damaged original part, with CAD modeling and black nylon fabrication using FDM 3D printing."),
+    context: text("Projeto desenvolvido a partir de um tensionador de corrente original danificado. O levantamento dimensional permitiu reconstruir sua geometria e criar um modelo digital para a fabricação de uma peça de reposição.", "Developed from a damaged original chain tensioner. Dimensional measurements enabled reconstruction of its geometry and creation of a digital model for manufacturing a replacement part."),
+    contribution: text("Realizei o levantamento dimensional e a conferência das medidas da peça original, desenvolvi o modelo 3D CAD e fabriquei o tensionador em nylon preto utilizando impressão 3D FDM.", "I measured the original part and checked its dimensions, developed the 3D CAD model and manufactured the tensioner in black nylon using FDM 3D printing."),
+    evidence: text("Componente desenvolvido para uma aplicação na indústria de bebidas. A documentação reúne duas vistas do modelo CAD e uma foto da peça fabricada em nylon preto, além do modelo 3D interativo para inspeção da geometria.", "A component developed for a beverage industry application. Documentation includes two CAD views and a photo of the part manufactured in black nylon, along with an interactive 3D model for geometry inspection."),
+  },
+  {
     id: 'protecao-polia', number: '05', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Escaneamento 3D', 'FDM', 'PET'], model: true, modelPath: 'assets/protecao-polia/modelo.glb.gz',
     photos: ['protecao-polia/01-scan.png', 'protecao-polia/02-cad.png', 'protecao-polia/03-aplicacao.png'],
     title: text("Proteção da polia orientadora", "Guide pulley guard"),
