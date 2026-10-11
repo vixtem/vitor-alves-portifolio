@@ -295,6 +295,17 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
       isDragging = false;
     };
 
+    // Wheel zoom only captures scrolling over the 3D canvas.
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? container.clientHeight : 1);
+      const distance = camera.position.length();
+      const nextDistance = THREE.MathUtils.clamp(distance * Math.exp(THREE.MathUtils.clamp(delta, -500, 500) * 0.0015), 1.5, 12);
+      camera.position.multiplyScalar(nextDistance / distance);
+      camera.lookAt(0, 0, 0);
+    };
+    container.addEventListener('wheel', onWheel, { passive: false });
+
     // Mouse
     const onMouseDown = (
       event: MouseEvent
@@ -445,6 +456,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
 
     return () => {
       disposed = true;
+      container.removeEventListener('wheel', onWheel);
       cancelAnimationFrame(reqId);
       scene.traverse(child => {
         if (child instanceof THREE.Mesh) {
@@ -537,7 +549,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
       {/* Interaction Help */}
       {!isLoading && !loadError && (
         <div className="absolute bottom-3 left-3 bg-ink/80 text-white text-[11px] font-bold px-3 py-1 rounded-full pointer-events-none">
-          {language === 'es' ? 'Arrastra para girar' : language === 'pt' ? 'Arraste para girar' : 'Drag to rotate'}
+          {language === 'es' ? 'Arrastra para girar · Rueda para zoom' : language === 'pt' ? 'Arraste para girar · Roda do mouse para zoom' : 'Drag to rotate · Scroll to zoom'}
         </div>
       )}
 
