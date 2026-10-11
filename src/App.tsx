@@ -85,7 +85,10 @@ export default function App() {
   const [contactOpen, setContactOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [senderName, setSenderName] = useState('');
-  const [channel, setChannel] = useState<'whatsapp' | 'email'>('whatsapp');
+  const [senderEmail, setSenderEmail] = useState('');
+  const [sending, setSending] = useState(false);
+  const [contactStatus, setContactStatus] = useState<'success' | 'error' | null>(null);
+  const [channel, setChannel] = useState<'whatsapp' | 'email'>('email');
   const t = (pt: string, en: string) => language === 'es' ? spanish[pt] : language === 'pt' ? pt : en;
   const c = (copy: Copy) => copy[language];
   const home = `${base}index.html?lang=${language}`;
@@ -101,17 +104,34 @@ export default function App() {
     window.history.replaceState(null, '', url);
   }, [language]);
 
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
+  async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!senderName.trim() || !message.trim()) return;
-    const body = (senderName.trim() ? `${t('Nome', 'Name')}: ${senderName.trim()}\n\n` : '') + message.trim();
+    if (!senderName.trim() || !message.trim() || sending) return;
+    setContactStatus(null);
+    const body = `${t('Nome', 'Name')}: ${senderName.trim()}\n\n${message.trim()}`;
     if (channel === 'whatsapp') {
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`, '_blank', 'noopener,noreferrer');
-    } else {
-      window.location.href = `mailto:${email}?subject=${encodeURIComponent(t('Oportunidade profissional — Vitor Alves', 'Career opportunity — Vitor Alves'))}&body=${encodeURIComponent(body)}`;
+      return;
+    }
+    if (!senderEmail.trim()) return;
+    setSending(true);
+    try {
+      const response = await fetch('https://formspree.io/f/xoejwywz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: senderName.trim(), email: senderEmail.trim(), message: message.trim(), _subject: 'Contato pelo portfólio — Vitor Alves' }),
+      });
+      if (!response.ok) throw new Error('Formspree submission failed');
+      setContactStatus('success');
+      setSenderName('');
+      setSenderEmail('');
+      setMessage('');
+    } catch {
+      setContactStatus('error');
+    } finally {
+      setSending(false);
     }
   }
-
 
   return <div className="career-site">
     <div className="topline"><span>{t('CAD / DESIGN / MANUFATURA ADITIVA', 'CAD / DESIGN / ADDITIVE MANUFACTURING')}</span><span>{t('São Luís, Brasil → oportunidades internacionais', 'São Luís, Brazil → international opportunities')}</span></div>
@@ -175,7 +195,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
       <section id="contact" className="shell contact-section"><div className="contact-panel"><p className="eyebrow">{t('Vamos conversar', 'Let’s connect')}</p><h2>{t('Uma próxima', 'A next')}<br />{t('oportunidade.', 'opportunity.')}</h2><p>{t('Para oportunidades profissionais, colaborações técnicas e conversas sobre desenvolvimento de produtos e manufatura aditiva.', 'For career opportunities, technical collaborations and conversations about product development and additive manufacturing.')}</p><div className="button-row"><button className="button lime" onClick={() => setContactOpen(true)}><Mail size={18} />{t('Entrar em contato', 'Get in touch')}</button><a className="button dark" href={`${base}assets/cv/Vitor_Alves_CV_${language.toUpperCase()}.pdf`} download><Download size={18} />{language === 'es' ? 'Descargar CV' : language === 'en' ? 'Download CV' : 'Baixar currículo'}</a></div><div className="social-links" style={{ display: 'flex', gap: 18, marginTop: 24 }}><a href="https://www.instagram.com/v1tor_a/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><Instagram size={24} /></a><a href="https://www.linkedin.com/in/vitor-alves-design" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><Linkedin size={24} /></a><a href="https://grabcad.com/vitor.alves-11" target="_blank" rel="noopener noreferrer" aria-label="GrabCAD" title="GrabCAD"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"/><path d="M14.5 6.5a3 3 0 1 0 0 3H12"/></svg></a></div><a className="email-link" href={`mailto:${email}`}>{email}</a></div></section>
     </main>
     <footer className="shell site-footer"><span>© {new Date().getFullYear()} Vitor Alves</span><span>{t('Design de Produto · CAD · Manufatura Aditiva', 'Product Design · CAD · Additive Manufacturing')}</span><a href={home}>{t('Início', 'Home')} ↑</a></footer>
-    <Dialog.Root open={contactOpen} onOpenChange={setContactOpen}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="project-dialog contact-dialog"><Dialog.Close className="dialog-close" aria-label={t('Fechar contato', 'Close contact')}><X /></Dialog.Close><Dialog.Title>{t('Escreva sua mensagem', 'Write your message')}</Dialog.Title><Dialog.Description>{t('Escolha WhatsApp ou e-mail. A mensagem será aberta no aplicativo escolhido para você confirmar o envio.', 'Choose WhatsApp or email. Your message will open in the selected app for you to confirm sending.')}</Dialog.Description><form onSubmit={sendMessage} className="contact-form"><label htmlFor="contact-name">{t('Nome', 'Name')}</label><input id="contact-name" autoComplete="name" required pattern={String.raw`.*\S.*`} maxLength={100} value={senderName} onChange={e => setSenderName(e.target.value)} /><label htmlFor="contact-message">{t('Mensagem', 'Message')}</label><textarea id="contact-message" rows={6} required maxLength={3000} value={message} onChange={e => setMessage(e.target.value)} /><fieldset><legend>{t('Como deseja enviar?', 'How would you like to send it?')}</legend><label><input type="radio" name="contact-channel" value="whatsapp" checked={channel === 'whatsapp'} onChange={() => setChannel('whatsapp')} /> WhatsApp</label><label><input type="radio" name="contact-channel" value="email" checked={channel === 'email'} onChange={() => setChannel('email')} /> {t('E-mail', 'Email')}</label></fieldset><button type="submit" className="button primary" disabled={!senderName.trim() || !message.trim()}>{channel === 'whatsapp' ? t('Continuar no WhatsApp', 'Continue in WhatsApp') : t('Continuar no e-mail', 'Continue in email')} <ArrowUpRight size={18} /></button></form></Dialog.Content></Dialog.Portal></Dialog.Root>
+    <Dialog.Root open={contactOpen} onOpenChange={setContactOpen}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="project-dialog contact-dialog"><Dialog.Close className="dialog-close" aria-label={t('Fechar contato', 'Close contact')}><X /></Dialog.Close><Dialog.Title>{t('Escreva sua mensagem', 'Write your message')}</Dialog.Title><Dialog.Description>{t('Escolha WhatsApp ou e-mail. O e-mail será enviado diretamente pelo site; o WhatsApp continuará abrindo o aplicativo.', 'Email is sent directly from this site; WhatsApp will still open its app.')}</Dialog.Description><form onSubmit={sendMessage} className="contact-form"><label htmlFor="contact-name">{t('Nome', 'Name')}</label><input id="contact-name" autoComplete="name" required pattern={String.raw`.*\S.*`} maxLength={100} value={senderName} onChange={e => setSenderName(e.target.value)} />{channel === 'email' && <><label htmlFor="contact-email">{t('Seu e-mail', 'Your email')}</label><input id="contact-email" type="email" autoComplete="email" required maxLength={254} value={senderEmail} onChange={e => setSenderEmail(e.target.value)} /></>}<label htmlFor="contact-message">{t('Mensagem', 'Message')}</label><textarea id="contact-message" rows={6} required maxLength={3000} value={message} onChange={e => setMessage(e.target.value)} /><fieldset><legend>{t('Como deseja enviar?', 'How would you like to send it?')}</legend><label><input type="radio" name="contact-channel" value="whatsapp" checked={channel === 'whatsapp'} onChange={() => setChannel('whatsapp')} /> WhatsApp</label><label><input type="radio" name="contact-channel" value="email" checked={channel === 'email'} onChange={() => setChannel('email')} /> {t('E-mail', 'Email')}</label></fieldset><button type="submit" className="button primary" disabled={sending || !senderName.trim() || !message.trim() || (channel === 'email' && !senderEmail.trim())}>{channel === 'whatsapp' ? t('Continuar no WhatsApp', 'Continue in WhatsApp') : sending ? t('Enviando…', 'Sending…') : t('Enviar mensagem', 'Send message')} <ArrowUpRight size={18} /></button>{contactStatus === 'success' && <p role="status" aria-live="polite">{t('Mensagem enviada com sucesso! Obrigado pelo contato.', 'Message sent successfully! Thank you for reaching out.')}</p>}{contactStatus === 'error' && <p role="alert">{t('Não foi possível enviar. Tente novamente em instantes.', 'Unable to send. Please try again shortly.')}</p>}</form></Dialog.Content></Dialog.Portal></Dialog.Root>
     <Dialog.Root open={selected !== null} onOpenChange={open => { if (!open) setSelected(null); }}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="project-dialog"><Dialog.Close className="dialog-close" aria-label={t('Fechar projeto', 'Close project')}><X /></Dialog.Close>{selected && <><p className="eyebrow">{selected.tags.map(tag => tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag === 'Manufatura Aditiva' ? t(tag, 'Additive Manufacturing') : tag).join(' / ')}</p><Dialog.Title>{c(selected.title)}</Dialog.Title><Dialog.Description>{c(selected.summary)}</Dialog.Description><ProjectGallery key={selected.id} photos={selected.photos} title={c(selected.title)} language={language} />{selected.model && <div className="dialog-model"><Suspense fallback={<p>{t('Carregando modelo…', 'Loading model…')}</p>}><ThreeViewer language={language} modelPath={selected.modelPath} /></Suspense></div>}<div className="case-details">{[[t('Contexto', 'Context'), selected.context], [t('Minha contribuição', 'My contribution'), selected.contribution], [t("Aplicação e documentação", "Application and documentation"), selected.evidence]].map(([label, copy], i) => <article key={i}><h3>{label as string}</h3><p>{c(copy as Copy)}</p></article>)}</div></>}</Dialog.Content></Dialog.Portal></Dialog.Root>
   </div>;
 }
