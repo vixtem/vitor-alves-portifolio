@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // Shared palette material for all current and future STL/GLB projects.
 const createModelMaterial = () => new THREE.MeshStandardMaterial({
-  color: 0xc6f226, roughness: 0.65, metalness: 0,
+  color: 0x147d64, roughness: 0.65, metalness: 0,
 });
 
 export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: string }> = ({ language = 'pt', modelPath = 'assets/glb/Ponteira_controle_T8L_v2.glb' }) => {
@@ -122,7 +122,7 @@ export const ThreeViewer: React.FC<{ language?: 'pt' | 'en' | 'es'; modelPath?: 
           return;
         }
 
-        // Apply the site lime green to every mesh, including imported GLB materials.
+        // Apply the dark petroleum green to every mesh, including imported GLB materials.
         const originalMaterials = new Set<THREE.Material>();
         model.traverse((child) => {
           if (child instanceof THREE.Mesh) {
