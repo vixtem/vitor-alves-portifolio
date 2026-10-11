@@ -1,7 +1,7 @@
 import { spanish } from './spanish';
 export type Language = 'pt' | 'en' | 'es';
 export type Copy = { pt: string; en: string; es: string };
-export const email = 'vitoralves0104@gmail.com';
+export const email = 'vitoralves.me@gmail.com';
 export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
