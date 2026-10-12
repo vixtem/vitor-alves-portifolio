@@ -11,6 +11,7 @@ const base = import.meta.env.BASE_URL;
 // New cases with a complete triptych automatically join the showcase.
 const showcaseProjects = projects.filter(project => project.photos.length === 3);
 const showcaseInterval = 60_000;
+const featuredInterval = 180_000;
 type Project = typeof projects[number];
 
 function shuffleProjects() {
@@ -105,11 +106,17 @@ export default function App() {
   const [featuredProjects, setFeaturedProjects] = useState(shuffleProjects);
   const [gridHovered, setGridHovered] = useState(false);
   const [gridFocused, setGridFocused] = useState(false);
+  const [gridPressed, setGridPressed] = useState(false);
+  const featuredTimer = useRef<number | undefined>(undefined);
+  const pauseFeatured = () => {
+    window.clearTimeout(featuredTimer.current);
+    setGridPressed(true);
+  };
   useEffect(() => {
-    if (isCases || !pageVisible || selected || gridHovered || gridFocused) return;
-    const timer = window.setInterval(() => setFeaturedProjects(shuffleProjects()), showcaseInterval);
-    return () => window.clearInterval(timer);
-  }, [isCases, pageVisible, selected, gridHovered, gridFocused]);
+    if (isCases || !pageVisible || selected || gridHovered || gridFocused || gridPressed) return;
+    featuredTimer.current = window.setTimeout(() => setFeaturedProjects(shuffleProjects()), featuredInterval);
+    return () => window.clearTimeout(featuredTimer.current);
+  }, [isCases, pageVisible, selected, gridHovered, gridFocused, gridPressed, featuredProjects]);
   const orderedProjects = isCases ? [...projects].sort((a, b) => Number(a.number) - Number(b.number)) : featuredProjects;
   const filteredProjects = orderedProjects.filter(p => filter === 'all' || p.category === filter || (filter === 'cad' && p.tags.includes('CAD')) || (filter === 'additive' && (p.tags.includes('FDM') || p.tags.includes('Manufatura Aditiva'))));
   const visibleProjects = isCases ? filteredProjects : filteredProjects.slice(0, 6);
@@ -204,7 +211,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
       <section id="projects" className="section shell"><div className="section-heading"><div><p className="eyebrow">{t('01 / Trabalho selecionado', '01 / Selected work')}</p><h2>{isCases ? t('Projetos & aplicações', 'Projects & applications') : <>{t('Da necessidade à peça', 'From a need to a')} <span className="accent">{t('Real', 'Real')}</span>.</>}</h2></div></div>
         {isCases && <a className="button primary projects-page-button" href={home}>← {language === 'es' ? 'Volver' : t('Voltar', 'Back')}</a>}
         <div className="filters" aria-label={t('Filtrar projetos', 'Filter projects')}>{[['all', t('Todos', 'All')], ['industrial', t('Aplicações industriais', 'Industrial applications')], ['cad', 'CAD'], ['personal', language === 'es' ? 'Proyectos personales' : t('Projetos Pessoais', 'Personal Projects')], ['additive', t('Manufatura Aditiva', 'Additive Manufacturing')]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>
-        <div className="project-grid" onMouseEnter={() => setGridHovered(true)} onMouseLeave={() => setGridHovered(false)} onFocus={() => setGridFocused(true)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setGridFocused(false); }}>{visibleProjects.map(p => <button className={`project-card ${p.id}`} key={p.id} onClick={() => setSelected(p)}><div className="project-cover"><span className="project-number">{p.number}</span>{p.model ? <img className="project-preview" src={`${base}assets/${p.photos[1] || p.photos[0]}`} alt={c(p.title)} loading="lazy" /> : p.id === 'protection' ? <div className="technical-symbol">[<span>CAD</span>]</div> : <Printer size={72} strokeWidth={1} />}</div><div className="project-body"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag === 'Manufatura Aditiva' ? t(tag, 'Additive Manufacturing') : tag}</span>)}</div><h3>{c(p.title)} <ArrowUpRight size={22} /></h3><p>{c(p.summary)}</p><span className="project-action">{t('Conhecer o trabalho', 'Explore the work')} →</span></div></button>)}</div>
+        <div className="project-grid" onPointerDownCapture={pauseFeatured} onPointerUpCapture={() => setGridPressed(false)} onPointerCancel={() => setGridPressed(false)} onMouseEnter={() => setGridHovered(true)} onMouseLeave={() => setGridHovered(false)} onFocus={() => setGridFocused(true)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setGridFocused(false); }}>{visibleProjects.map(p => <button className={`project-card ${p.id}`} key={p.id} onClick={() => setSelected(p)}><div className="project-cover"><span className="project-number">{p.number}</span>{p.model ? <img className="project-preview" src={`${base}assets/${p.photos[1] || p.photos[0]}`} alt={c(p.title)} loading="lazy" /> : p.id === 'protection' ? <div className="technical-symbol">[<span>CAD</span>]</div> : <Printer size={72} strokeWidth={1} />}</div><div className="project-body"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag === 'Engenharia reversa' ? t(tag, 'Reverse engineering') : tag === 'Manufatura Aditiva' ? t(tag, 'Additive Manufacturing') : tag}</span>)}</div><h3>{c(p.title)} <ArrowUpRight size={22} /></h3><p>{c(p.summary)}</p><span className="project-action">{t('Conhecer o trabalho', 'Explore the work')} →</span></div></button>)}</div>
         {!isCases && <a className="button primary projects-page-button" href={`${base}cases.html?lang=${language}`}>{language === 'es' ? 'Ver más proyectos' : t('Veja mais projetos', 'See more projects')} <ArrowUpRight size={18} /></a>}
       </section>
       {!isCases && <>
