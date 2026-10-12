@@ -6,6 +6,15 @@ export const whatsappNumber = '5598991202439';
 export const text = (pt: string, en: string): Copy => ({ pt, en, es: spanish[pt] });
 export const projects = [
   {
+    id: 'kobra-s1', number: '07', category: 'personal', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'FDM', 'ABS'], model: true, modelPath: 'assets/kobra-s1/modelo.stl',
+    photos: ['kobra-s1/01-cad.png', 'kobra-s1/02-fabricada.jpg', 'kobra-s1/03-instalada.jpg'],
+    title: { pt: 'Carcaça do cabeçote da Kobra S1', en: 'Kobra S1 printhead housing', es: 'Carcasa del cabezal de la Kobra S1' },
+    summary: { pt: 'Carcaça de reposição para a Anycubic Kobra S1, reconstruída em CAD e impressa em ABS, com fixação por ímãs em substituição aos encaixes mecânicos.', en: 'Replacement housing for the Anycubic Kobra S1, reconstructed in CAD and printed in ABS, with magnets replacing mechanical clips.', es: 'Carcasa de repuesto para la Anycubic Kobra S1, reconstruida en CAD e impresa en ABS, con imanes en lugar de encajes mecánicos.' },
+    context: { pt: 'Projeto pessoal desenvolvido para substituir a carcaça quebrada do cabeçote da minha impressora 3D Anycubic Kobra S1, utilizando o componente original como referência para a reconstrução da geometria.', en: 'A personal project to replace the broken printhead housing of my Anycubic Kobra S1 3D printer, using the original component as a reference to reconstruct its geometry.', es: 'Proyecto personal para sustituir la carcasa rota del cabezal de mi impresora 3D Anycubic Kobra S1, utilizando el componente original como referencia para reconstruir su geometría.' },
+    contribution: { pt: 'Modelei a carcaça em CAD a partir da peça original danificada e adaptei o sistema de fixação para utilizar ímãs no lugar dos encaixes mecânicos. Em seguida, fabriquei as peças em ABS por impressão 3D FDM.', en: 'I modeled the housing in CAD from the damaged original part and adapted the fastening system to use magnets instead of mechanical clips. I then manufactured the parts in ABS using FDM 3D printing.', es: 'Modelé la carcasa en CAD a partir de la pieza original dañada y adapté el sistema de fijación para utilizar imanes en lugar de encajes mecánicos. Después fabriqué las piezas en ABS mediante impresión 3D FDM.' },
+    evidence: { pt: 'Aplicação pessoal de reposição de um componente da impressora. A documentação apresenta o modelo CAD, a carcaça fabricada e a peça instalada no cabeçote, além do modelo 3D interativo para inspeção da geometria.', en: 'A personal application replacing a printer component. Documentation shows the CAD model, the manufactured housing and the part installed on the printhead, along with an interactive 3D model for geometry inspection.', es: 'Aplicación personal de sustitución de un componente de la impresora. La documentación muestra el modelo CAD, la carcasa fabricada y la pieza instalada en el cabezal, además del modelo 3D interactivo para inspeccionar la geometría.' },
+  },
+  {
     id: 'tensionador-corrente', number: '06', category: 'industrial', tags: ['CAD', 'Manufatura Aditiva', 'Engenharia reversa', 'FDM', 'Nylon'], model: true, modelPath: 'assets/tensionador-corrente/modelo.stl',
     photos: ['tensionador-corrente/01-cad.png', 'tensionador-corrente/02-cad.png', 'tensionador-corrente/03-fabricada.png'],
     title: text("Tensionador de corrente", "Chain tensioner"),
@@ -43,7 +52,7 @@ export const projects = [
   },
 
   {
-    id: 'sabao-em-po', number: '02', category: 'cad', tags: ['Fusion 360', 'CAD', 'Manufatura Aditiva'], model: true, modelPath: 'assets/sabao-em-po/arquivo_stl_3d.stl',
+    id: 'sabao-em-po', number: '02', category: 'personal', tags: ['Fusion 360', 'CAD', 'Manufatura Aditiva'], model: true, modelPath: 'assets/sabao-em-po/arquivo_stl_3d.stl',
     photos: ['sabao-em-po/F-01_modelagem3D.png', 'sabao-em-po/F-02_Real.png', 'sabao-em-po/F-03_Real.png'],
     title: text('Recipiente de sabão em pó', 'Powder detergent dispenser'),
     summary: text('Projeto pessoal de um recipiente dosador, da modelagem no Fusion 360 à fabricação por impressão 3D.', 'A personal dispenser project, from Fusion 360 modeling to 3D printing.'),
@@ -52,7 +61,7 @@ export const projects = [
     evidence: text('Desenvolvido para facilitar a retirada de pequenas doses de sabão em pó. O conceito também pode ser adaptado a outros produtos em pó, conforme suas características. A documentação reúne uma imagem do modelo CAD, duas fotos da peça fabricada e o modelo 3D para inspeção interativa.', 'Designed to make dispensing small doses of powder detergent easier. The concept can also be adapted to other powdered products depending on their characteristics. Documentation includes a CAD image, two photos of the manufactured part and an interactive 3D model.'),
   },
   {
-    id: 't8l', number: '01', category: 'cad', tags: ['Fusion 360', 'CAD', 'FDM'], model: true, modelPath: 'assets/glb/Ponteira_controle_T8L_v2.glb', photos: ['foto01.jpeg', 'foto02.jpeg', 'foto03.jpeg'],
+    id: 't8l', number: '01', category: 'personal', tags: ['Fusion 360', 'CAD', 'FDM'], model: true, modelPath: 'assets/glb/Ponteira_controle_T8L_v2.glb', photos: ['foto01.jpeg', 'foto02.jpeg', 'foto03.jpeg'],
     title: text('Ponteira para controle T8L', 'T8L controller stick tip'),
     summary: text('Modelagem de um acessório para controle de rádio, com arquivo 3D disponível para inspeção interativa.', 'A radio controller accessory, with a 3D model available for interactive inspection.'),
     context: text('Projeto pessoal de acessório para o controle RadioMaster T8L.', 'A personal accessory project for the RadioMaster T8L controller.'),
