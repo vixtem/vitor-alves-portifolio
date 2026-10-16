@@ -531,7 +531,7 @@ export const ThreeViewer: React.FC<{ language?: Language; modelPath?: string }> 
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-ink text-white text-xs font-black uppercase px-4 py-2 rounded-full">
-            {language === 'it' ? 'Caricamento 3D...' : language === 'es' ? 'Cargando 3D...' : language === 'pt' ? 'Carregando 3D...' : 'Loading 3D...'}
+            {language === 'fr' ? 'Chargement 3D...' : language === 'it' ? 'Caricamento 3D...' : language === 'es' ? 'Cargando 3D...' : language === 'pt' ? 'Carregando 3D...' : 'Loading 3D...'}
           </div>
         </div>
       )}
@@ -541,7 +541,7 @@ export const ThreeViewer: React.FC<{ language?: Language; modelPath?: string }> 
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <div className="bg-white border-2 border-ink rounded-xl p-4 text-center brutal-shadow">
             <p className="text-sm font-black text-ink">
-              {language === 'it' ? 'Impossibile caricare il modello 3D.' : language === 'es' ? 'No se pudo cargar el modelo 3D.' : language === 'pt' ? 'Não foi possível carregar o modelo 3D.' : 'Unable to load the 3D model.'}
+              {language === 'fr' ? 'Impossible de charger le modèle 3D.' : language === 'it' ? 'Impossibile caricare il modello 3D.' : language === 'es' ? 'No se pudo cargar el modelo 3D.' : language === 'pt' ? 'Não foi possível carregar o modelo 3D.' : 'Unable to load the 3D model.'}
             </p>
           </div>
         </div>
@@ -550,7 +550,7 @@ export const ThreeViewer: React.FC<{ language?: Language; modelPath?: string }> 
       {/* Interaction Help */}
       {!isLoading && !loadError && (
         <div className="absolute bottom-3 left-3 bg-ink/80 text-white text-[11px] font-bold px-3 py-1 rounded-full pointer-events-none">
-          {language === 'it' ? 'Trascina per ruotare · Scorri per lo zoom' : language === 'es' ? 'Arrastra para girar · Rueda para zoom' : language === 'pt' ? 'Arraste para girar · Roda do mouse para zoom' : 'Drag to rotate · Scroll to zoom'}
+          {language === 'fr' ? 'Faites glisser pour tourner · Molette pour zoomer' : language === 'it' ? 'Trascina per ruotare · Scorri per lo zoom' : language === 'es' ? 'Arrastra para girar · Rueda para zoom' : language === 'pt' ? 'Arraste para girar · Roda do mouse para zoom' : 'Drag to rotate · Scroll to zoom'}
         </div>
       )}
 
