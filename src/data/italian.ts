@@ -12,8 +12,8 @@ export const italian: Record<string, string> = {
   "Abrir ou fechar menu": "Apri o chiudi il menu",
   "Portfólio profissional / Vitor Alves": "Portfolio professionale / Vitor Alves",
   "Design de produto": "Design di prodotto",
-  "para a": "per l’",
-  "indústria.": "industria.",
+  "para a": "per",
+  "indústria.": "l’industria.",
   "Design de Produto · CAD · Manufatura Aditiva": "Design di Prodotto · CAD · Produzione Additiva",
   "Desenvolvo peças técnicas para aplicações industriais, conectando levantamento dimensional, modelagem CAD, seleção de materiais e manufatura aditiva.": "Sviluppo componenti tecnici per applicazioni industriali, collegando rilievo dimensionale, modellazione CAD, selezione dei materiali e produzione additiva.",
   "Explorar projetos": "Esplora i progetti",
@@ -125,5 +125,6 @@ export const italian: Record<string, string> = {
   "Levantamento dimensional · Reconstrução de geometria · Ajustes para fabricação": "Rilievo dimensionale · Ricostruzione della geometria · Adattamenti per la fabbricazione",
   "Prototipagem e aplicação": "Prototipazione e applicazione",
   "Peças técnicas · Componentes industriais · Relatórios · Acompanhamento de aplicações": "Pezzi tecnici · Componenti industriali · Relazioni · Monitoraggio delle applicazioni",
-  "Escaneamento 3D": "Scansione 3D"
+  "Escaneamento 3D": "Scansione 3D",
+  "Contato pelo portfólio — Vitor Alves": "Contatto dal portfolio — Vitor Alves"
 };

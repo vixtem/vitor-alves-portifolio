@@ -148,7 +148,7 @@ export default function App() {
       const response = await fetch('https://formspree.io/f/xoejwywz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name: senderName.trim(), email: senderEmail.trim(), message: message.trim(), _subject: 'Contato pelo portfólio — Vitor Alves' }),
+        body: JSON.stringify({ name: senderName.trim(), email: senderEmail.trim(), message: message.trim(), _subject: t('Contato pelo portfólio — Vitor Alves', 'Portfolio enquiry — Vitor Alves') }),
       });
       if (!response.ok) throw new Error('Formspree submission failed');
       setContactStatus('success');
