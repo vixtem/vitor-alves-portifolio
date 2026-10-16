@@ -45,9 +45,7 @@
 /* Green accent on the revealed surname. */
 .wordmark .wordmark-last{color:#141414}
 
-/* Keep only the selected language flag in color. */
-.languages button[aria-pressed="false"] svg{filter:grayscale(100%)}
-.languages button[aria-pressed="true"] svg{filter:none}
+
 
 
 /* Three project photos, with expansion contained inside the card. */
@@ -132,3 +130,13 @@ html{color-scheme:light}
 @keyframes showcase-appear{from{opacity:0}to{opacity:1}}
 
 .projects-page-button{margin-top:32px;min-height:54px;padding:16px 26px;font-size:13px;box-shadow:4px 4px 0 var(--ink)}
+
+/* Compact flag trigger; language names appear only in the open picker. */
+.language-selector{position:relative}
+.languages .language-trigger{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:9px;border:1px solid #14141440;border-radius:8px;background:var(--paper)}
+.language-options{position:absolute;right:0;top:calc(100% + 8px);z-index:40;min-width:170px;padding:6px;border:2px solid var(--ink);border-radius:12px;background:var(--paper);box-shadow:3px 3px 0 var(--ink);display:grid;gap:3px}
+.languages .language-options button{display:flex;align-items:center;gap:12px;min-height:44px;padding:10px;border-radius:6px;text-align:left;color:var(--ink);text-decoration:none}
+.languages .language-options button[aria-pressed=true]{background:#ff46251a}
+.languages .language-options button:hover{background:#1414140d}
+.language-selector button:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.language-selector svg{flex-shrink:0;display:block}

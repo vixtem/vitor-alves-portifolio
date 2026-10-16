@@ -7,7 +7,7 @@ export function ProjectGallery({ photos, title, language }: { photos: readonly s
   const [active, setActive] = useState<number | null>(null);
   const [direction, setDirection] = useState(1);
   const start = useRef<{ x: number; y: number } | null>(null);
-  const labels = language === 'es' ? ['Cerrar foto', 'Foto anterior', 'Foto siguiente', 'Ampliar foto', 'Foto'] : language === 'en' ? ['Close photo', 'Previous photo', 'Next photo', 'Expand photo', 'Photo'] : ['Fechar foto', 'Foto anterior', 'Próxima foto', 'Ampliar foto', 'Foto'];
+  const labels = language === 'it' ? ['Chiudi foto', 'Foto precedente', 'Foto successiva', 'Ingrandisci foto', 'Foto'] : language === 'es' ? ['Cerrar foto', 'Foto anterior', 'Foto siguiente', 'Ampliar foto', 'Foto'] : language === 'en' ? ['Close photo', 'Previous photo', 'Next photo', 'Expand photo', 'Photo'] : ['Fechar foto', 'Foto anterior', 'Próxima foto', 'Ampliar foto', 'Foto'];
   const src = (file: string) => `${import.meta.env.BASE_URL}assets/${file}`;
   const move = (step: number) => {
     setDirection(step);
